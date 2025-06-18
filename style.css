@@ -1,12 +1,13 @@
 body {
   background-color: black;
-  font-style: Ubuntu, sans-serif;
+  color: white;
+  font-family: 'Ubuntu', sans-serif;
   margin: 20px;
+  font-size: small;
 }
 
 table {
   border-collapse: collapse;
-  font-style: Ubuntu, sans-serif;
   color: gray;
   width: 100%;
   margin-top: 20px;
@@ -20,10 +21,4 @@ th, td {
 
 th {
   background-color: #000;
-}
-
-text {
-    color: #fff;
-    font-style: Ubuntu, sans-serif;
-    font-size: x-small;
 }
