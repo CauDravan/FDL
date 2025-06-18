@@ -1,21 +1,29 @@
+body {
+  background-color: black;
+  font-style: Ubuntu, sans-serif;
+  margin: 20px;
+}
+
 table {
   border-collapse: collapse;
+  font-style: Ubuntu, sans-serif;
+  color: gray;
   width: 100%;
   margin-top: 20px;
 }
 
 th, td {
-  border: 1px solid #ccc;
+  border: 1px solid gray;
   padding: 6px 10px;
   text-align: left;
 }
 
 th {
-  background-color: #383E47;
+  background-color: #000;
 }
 
 text {
     color: #fff;
-    font-style: italic;
-    font-size: small;
+    font-style: Ubuntu, sans-serif;
+    font-size: x-small;
 }
