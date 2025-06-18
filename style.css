@@ -11,5 +11,11 @@ th, td {
 }
 
 th {
-  background-color: #f4f4f4;
+  background-color: #383E47;
+}
+
+text {
+    color: #fff;
+    font-style: italic;
+    font-size: small;
 }
