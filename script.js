@@ -7,8 +7,9 @@ fetch(url)
     const list = document.getElementById('level-list');
 
     data.forEach(row => {
+      const values = Object.values(row).slice(0, 12);
       const li = document.createElement('li');
-      li.textContent = row['Level'] || JSON.stringify(row);
+      li.textContent = values.join(' | ');
       list.appendChild(li);
     });
   })
