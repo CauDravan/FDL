@@ -4,7 +4,7 @@ const url = `https://opensheet.elk.sh/${sheetId}/Level(Cd)`;
 fetch(url)
   .then(response => response.json())
   .then(data => {
-    const list = document.getElementById('cd-level-list');
+    const list = document.getElementById('cd-levels-list');
 
     data.forEach(row => {
       const values = Object.values(row).slice(0, 12);
