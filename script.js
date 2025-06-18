@@ -1,4 +1,4 @@
-const api_key = 'AKfycbzhTUYLpbsJoBnaeXn9uXJx1Ozo8p8oJR2-TNKN0Mnt6s4XgArmZ9AJM_0gGda5hZf2';
+const api_key = 'AIzaSyCvKaiU44wkPFkcuWlc28qa7oRGpHupA4o';
 const sheet_id = '1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o';
 const range = "'Level(Cd)'!$L:$L";
 
