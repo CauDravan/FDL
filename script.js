@@ -10,7 +10,7 @@ fetch(url)
     if (data.length === 0) return;
 
     const header_row = document.createElement('tr');
-    Object.keys(data[0]).slice(1, 12).forEach(col => {
+    Object.keys(data[0]).slice(2, 12).forEach(col => {
       const th = document.createElement('th');
       th.textContent = col;
       header_row.appendChild(th);
@@ -19,7 +19,7 @@ fetch(url)
 
     data.forEach(row => {
       const tr = document.createElement('tr');
-      Object.values(row).slice(1, 12).forEach(cell => {
+      Object.values(row).slice(2, 12).forEach(cell => {
         const td = document.createElement('td');
         td.textContent = cell;
         tr.appendChild(td);
