@@ -9,13 +9,13 @@ fetch(url)
 
     if (data.length === 0) return;
 
-    const headerRow = document.createElement('tr');
+    const header_row = document.createElement('tr');
     Object.keys(data[0]).slice(0, 12).forEach(col => {
       const th = document.createElement('th');
       th.textContent = col;
-      headerRow.appendChild(th);
+      header_row.appendChild(th);
     });
-    table_head.appendChild(headerRow);
+    table_head.appendChild(header_row);
 
     data.forEach(row => {
       const tr = document.createElement('tr');
