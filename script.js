@@ -4,13 +4,27 @@ const url = `https://opensheet.elk.sh/${sheetId}/Level(Cd)`;
 fetch(url)
   .then(response => response.json())
   .then(data => {
-    const list = document.getElementById('cd-levels-list');
+    const table_head = document.getElementById('table_head');
+    const table_body = document.getElementById('table_body');
+
+    if (data.length === 0) return;
+
+    const headerRow = document.createElement('tr');
+    Object.keys(data[0]).slice(0, 12).forEach(col => {
+      const th = document.createElement('th');
+      th.textContent = col;
+      headerRow.appendChild(th);
+    });
+    table_head.appendChild(headerRow);
 
     data.forEach(row => {
-      const values = Object.values(row).slice(0, 12);
-      const li = document.createElement('li');
-      li.textContent = values.join(' | ');
-      list.appendChild(li);
+      const tr = document.createElement('tr');
+      Object.values(row).slice(0, 12).forEach(cell => {
+        const td = document.createElement('td');
+        td.textContent = cell;
+        tr.appendChild(td);
+      });
+      table_body.appendChild(tr);
     });
   })
   .catch(error => console.error('Error:', error));
