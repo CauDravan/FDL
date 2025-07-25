@@ -2,16 +2,86 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Details</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FDL Level Details</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.05);
+      font-family: "Segoe UI", sans-serif;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .detail-row span {
+      font-weight: bold;
+      color: #555;
+    }
+    .back-link {
+      display: block;
+      margin-top: 20px;
+      text-align: center;
+      text-decoration: none;
+      color: #666;
+    }
+    .back-link:hover {
+      color: #000;
+    }
+  </style>
 </head>
 <body>
-  <h1>Chi tiết level</h1>
-  <p>ID: <span id="levelId"></span></p>
+  <div class="container">
+    <h1>Level Details</h1>
+    <div id="detailsContainer">Loading...</div>
+    <a class="back-link" href="index.html">← Back to list</a>
+  </div>
 
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
-    document.getElementById('levelId').textContent = id;
+    const sheetId = '1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o';
+    const sheetName = 'Level(Cd)';
+    const url = `https://opensheet.elk.sh/${sheetId}/${sheetName}`;
+
+    const queryParams = new URLSearchParams(window.location.search);
+    const id = parseInt(queryParams.get('id'), 10);
+
+    const fields = [
+      'NO', 'Date', 'ID', 'FDG', 'Game', 'Developer', 'Level', 'Own Rate', 'Rate',
+      'Genres', 'Feel', 'Exp', 'BS', 'Data', 'Vision', 'Speed', 'Acc', 'Str', 'Player', 'Video'
+    ];
+
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        const entry = data[id];
+        const container = document.getElementById('detailsContainer');
+        if (!entry) {
+          container.innerHTML = `<p>Không tìm thấy level có ID ${id}</p>`;
+          return;
+        }
+
+        container.innerHTML = fields.map(field => `
+          <div class="detail-row">
+            <span>${field}:</span>
+            <div>${entry[field] || '-'}</div>
+          </div>
+        `).join('');
+      })
+      .catch(err => {
+        document.getElementById('detailsContainer').innerHTML = `<p>Lỗi khi tải dữ liệu: ${err}</p>`;
+        console.error(err);
+      });
   </script>
 </body>
 </html>
