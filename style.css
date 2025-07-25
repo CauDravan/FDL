@@ -73,6 +73,10 @@ input#searchInput {
 }
 
 .game-name {
-  flex-grow: 1;
   font-size: 1rem;
+  margin-left: auto; /* đẩy sát phải */
+  padding-right: 12px; /* thêm tí đệm cho đẹp */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
