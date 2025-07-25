@@ -53,16 +53,11 @@ input#searchInput {
 }
 
 .data-row {
-  display: flex;
+  .data-row {
+  display: grid;
+  grid-template-columns: 48px 150px 1fr;
   align-items: center;
-  justify-content: space-between; /* <--- THÊM DÒNG NÀY */
-  gap: 30px; /* <--- Tăng khoảng cách giữa các cột */
-  padding: 12px 16px;
-  background: #fafafa;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  transition: 0.2s;
-  cursor: pointer;
+  gap: 20px;
 }
 
 .level-icon {
