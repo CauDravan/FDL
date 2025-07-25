@@ -1,29 +1,76 @@
-.card {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: #ffffff;
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #f5f5f5;
+  color: #333;
+}
+
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+}
+
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+input#searchInput {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 16px;
+  margin-bottom: 25px;
+  border: 1px solid #ccc;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  margin: 8px 0;
+}
+
+.grid-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.data-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 16px;
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  transition: 0.2s;
   cursor: pointer;
-  transition: transform 0.2s ease;
-  gap: 30px; /* thêm khoảng cách giữa các thành phần */
 }
 
-.card:hover {
+.data-row:hover {
+  background: #f0f0f0;
   transform: scale(1.01);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-.card img {
-  width: 40px;
-  height: 40px;
+.level-icon {
+  width: 48px;
+  height: 48px;
   object-fit: contain;
 }
 
-.card span {
-  font-size: 16px;
-  color: #333;
-  flex-shrink: 0;
+.own-rate {
+  width: 80px;
+  font-weight: bold;
+  color: #444;
+}
+
+.game-name {
+  flex-grow: 1;
+  font-size: 1rem;
 }
