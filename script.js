@@ -1,80 +1,73 @@
-const spreadsheetId = '1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o';
-const sheetName = "'Level(Cd)'!A:T";
-const url = `https://opensheet.elk.sh/${spreadsheetId}/${sheetName}`;
+const sheetId = '1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o';
+const sheetName = "'Level(Cd)'A:T";
+const url = `https://opensheet.elk.sh/${sheetId}/${sheetName}`;
 
-const dataContainer = document.getElementById('dataContainer');
-const searchInput = document.getElementById('searchInput');
-const detailView = document.getElementById('detailView');
-const detailContent = document.getElementById('detailContent');
-const backButton = document.getElementById('backButton');
+const iconMap = {
+  '-1': 'lv1f',
+  '-2': 'lv2f',
+  '-3': 'lv3f',
+  '-46': 'lvinf',
+  'U': 'lvU',
+  'R': 'lvR'
+};
 
-function levelToIcon(level) {
-  const iconMap = {
-    '-1': 'lv1f',
-    '-2': 'lv2f',
-    '-3': 'lv3f',
-    'U': 'lvU',
-    'R': 'lvR',
-    '-46': 'lvinf'
+function getIconFile(level) {
+  const key = iconMap[level] || level;
+  return `icons/${key}.png`;
+}
+
+function createRow(data, index) {
+  const container = document.createElement('div');
+  container.className = 'data-row';
+  container.onclick = () => {
+    window.location.href = `details.html?id=${index}`;
   };
 
-  if (iconMap[level]) return iconMap[level];
+  const icon = document.createElement('img');
+  icon.src = getIconFile(data.Level);
+  icon.alt = data.Level;
+  icon.className = 'level-icon';
 
-  const base = Math.floor(Number(level));
-  const decimal = (Number(level) - base).toFixed(1);
-  const stars = decimal === '0.1' ? '⭑' : decimal === '0.2' ? '⭑⭑' : '';
+  const ownRate = document.createElement('div');
+  ownRate.className = 'own-rate';
+  ownRate.textContent = data['Own Rate'] || '-';
 
-  return `lv${base}${stars}`;
+  const gameName = document.createElement('div');
+  gameName.className = 'game-name';
+  gameName.textContent = data['Game Name'] || '(No name)';
+
+  container.appendChild(icon);
+  container.appendChild(ownRate);
+  container.appendChild(gameName);
+
+  return container;
 }
 
-function createRow(item) {
-  const div = document.createElement('div');
-  div.className = 'row';
-  div.innerHTML = `
-    <img src="icons/${levelToIcon(item.Level)}.png" alt="${item.Level}" class="icon">
-    <span class="rate">${item['Own Rate']}</span>
-    <span class="name">${item['Game Name']}</span>
-  `;
-  div.addEventListener('click', () => showDetail(item));
-  return div;
+async function loadData() {
+  try {
+    const res = await fetch(url);
+    const json = await res.json();
+    window.allData = json;
+    displayData(json);
+  } catch (err) {
+    console.error('Failed to load data:', err);
+  }
 }
 
-function showDetail(item) {
-  detailView.classList.remove('hidden');
-  dataContainer.style.display = 'none';
-  searchInput.style.display = 'none';
-  detailContent.innerHTML = `
-    <h2>${item['Game Name']}</h2>
-    <img src="icons/${levelToIcon(item.Level)}.png" alt="${item.Level}" class="icon-large">
-    <p><strong>Level:</strong> ${item.Level}</p>
-    <p><strong>Own Rate:</strong> ${item['Own Rate']}</p>
-    <p><strong>More Info:</strong> (Thêm thông tin ở đây nếu cần)</p>
-  `;
+function displayData(data) {
+  const container = document.getElementById('dataContainer');
+  container.innerHTML = '';
+  data.forEach((row, index) => {
+    container.appendChild(createRow(row, index));
+  });
 }
 
-backButton.addEventListener('click', () => {
-  detailView.classList.add('hidden');
-  dataContainer.style.display = '';
-  searchInput.style.display = '';
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  const query = e.target.value.toLowerCase();
+  const filtered = window.allData.filter(row =>
+    row['Game Name']?.toLowerCase().includes(query)
+  );
+  displayData(filtered);
 });
 
-function renderData(data) {
-  dataContainer.innerHTML = '';
-  data.forEach(item => {
-    const row = createRow(item);
-    dataContainer.appendChild(row);
-  });
-}
-
-fetch(url)
-  .then(res => res.json())
-  .then(data => {
-    let allData = data;
-    renderData(allData);
-
-    searchInput.addEventListener('input', e => {
-      const keyword = e.target.value.toLowerCase();
-      const filtered = allData.filter(item => item['Game Name'].toLowerCase().includes(keyword));
-      renderData(filtered);
-    });
-  });
+loadData();
