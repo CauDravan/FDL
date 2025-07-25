@@ -1,30 +1,49 @@
 body {
-  background-color: black;
-  color: white;
-  font-family: 'Ubuntu', sans-serif;
-  margin: 20px;
-  font-size: small;
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: #fff;
+  padding: 20px;
 }
 
-table {
-  border-collapse: collapse;
-  font-size: 8px;
-  color: white;
+.container {
+  max-width: 800px;
+  margin: auto;
+}
+
+#searchInput {
   width: 100%;
-  margin-top: 20px;
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 16px;
 }
 
-th, td {
-  border: 1px solid gray;
-  padding: 6px 10px;
-  text-align: left;
+.game-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-th {
-  background-color: #000;
+.game-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: #222;
+  border-radius: 8px;
+  box-shadow: 0 0 5px #444;
 }
 
-.table-wrapper {
-  width: 100%;
-  overflow-x: auto;
+.game-item img {
+  width: 48px;
+  height: 48px;
+  margin-right: 16px;
+}
+
+.game-name {
+  font-weight: bold;
+  flex: 1;
+}
+
+.own-rate {
+  font-size: 14px;
+  color: #aaa;
 }
