@@ -1,5 +1,5 @@
 const spreadsheetId = '1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o';
-const sheetName = 'Sheet1';
+const sheetName = "'Level(Cd)'!A:T";
 const url = `https://opensheet.elk.sh/${spreadsheetId}/${sheetName}`;
 
 const dataContainer = document.getElementById('dataContainer');
