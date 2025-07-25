@@ -15,14 +15,33 @@
     const params = new URLSearchParams(window.location.search);
     const no = params.get("no");
 
-    fetch("https://opensheet.elk.sh/1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o/0")
+    // Hàm lấy tên icon dựa vào giá trị level
+    function getIconFileName(level) {
+      const specialIcons = {
+        "-1": "lv1f",
+        "-2": "lv2f",
+        "-3": "lv3f",
+        "U": "lvU",
+        "R": "lvR",
+        "-46": "lvinf"
+      };
+      return specialIcons[level] || `lv${level}`;
+    }
+
+    fetch("https://opensheet.elk.sh/1j6RlyzBKN0WX_HsLL4dJ0mzzF1TzYauxok55dIKA1U2o/0")
       .then(res => res.json())
       .then(data => {
         const item = data.find(d => d.NO === no);
-        if (!item) return document.getElementById("detail").textContent = "Không tìm thấy dữ liệu.";
+        if (!item) {
+          document.getElementById("detail").textContent = "Không tìm thấy dữ liệu.";
+          return;
+        }
+
+        const iconName = getIconFileName(item.Level);
+        const iconHTML = `<img src="icons/${iconName}.png" alt="icon" style="height: 48px;">`;
 
         document.getElementById("detail").innerHTML = `
-          <h2>${item.Game}</h2>
+          <h2>${iconHTML} ${item.Game}</h2>
           <ul>
             ${Object.entries(item).map(([k, v]) => `<li><strong>${k}</strong>: ${v}</li>`).join("")}
           </ul>
