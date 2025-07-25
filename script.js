@@ -20,7 +20,7 @@ function getIconFile(level) {
 
   const numLevel = parseFloat(level);
   if (!isNaN(numLevel)) {
-    return `icons/lv${Math.round(numLevel)}.png`;
+    return `icons/lv${Math.floor(numLevel)}.png`;
   }
 
   return `icons/lv${level}.png`; // fallback nếu không parse được
