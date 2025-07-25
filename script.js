@@ -54,12 +54,10 @@ function getIconName(level) {
 }
 
 function renderPagination(totalItems) {
-  const gameList = document.getElementById("gameList");
+  const pagination = document.getElementById("pagination");
+  pagination.innerHTML = ""; // Xoá pagination cũ
 
   const totalPages = Math.ceil(totalItems / pageSize);
-  const nav = document.createElement("div");
-  nav.className = "pagination";
-
   for (let i = 1; i <= totalPages; i++) {
     const btn = document.createElement("button");
     btn.textContent = i;
@@ -68,8 +66,6 @@ function renderPagination(totalItems) {
       currentPage = i;
       renderList(document.getElementById("searchInput").value);
     };
-    nav.appendChild(btn);
+    pagination.appendChild(btn);
   }
-
-  gameList.appendChild(nav);
 }
