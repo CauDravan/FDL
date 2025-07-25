@@ -14,7 +14,7 @@ const iconMap = {
 
 function getIconFile(level) {
   const key = iconMap[level] || level;
-  return `icons/lv${key}.png`;
+  return `icons/lv${Math.round(key)}.png`;
 }
 
 function createRow(data, index) {
