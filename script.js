@@ -7,13 +7,14 @@ const iconMap = {
   '-2': 'lv2f',
   '-3': 'lv3f',
   '-46': 'lvinf',
+  'P': 'lvP',
   'U': 'lvU',
   'R': 'lvR'
 };
 
 function getIconFile(level) {
   const key = iconMap[level] || level;
-  return `icons/${key}.png`;
+  return `icons/lv${key}.png`;
 }
 
 function createRow(data, index) {
