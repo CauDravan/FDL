@@ -26,11 +26,12 @@ function getIconFile(level) {
   return `icons/lv${level}.png`; // fallback nếu không parse được
 }
 
-function createRow(data, index) {
+// ✅ Dùng NO làm id duy nhất
+function createRow(data) {
   const container = document.createElement('div');
   container.className = 'data-row';
   container.onclick = () => {
-    window.location.href = `details.html?id=${index}`;
+    window.location.href = `details.html?id=${data['NO']}`;
   };
 
   const icon = document.createElement('img');
@@ -67,8 +68,8 @@ async function loadData() {
 function displayData(data) {
   const container = document.getElementById('dataContainer');
   container.innerHTML = '';
-  data.forEach((row, index) => {
-    container.appendChild(createRow(row, index));
+  data.forEach(row => {
+    container.appendChild(createRow(row));
   });
 }
 
