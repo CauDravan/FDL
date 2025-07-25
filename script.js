@@ -13,8 +13,17 @@ const iconMap = {
 };
 
 function getIconFile(level) {
-  const key = iconMap[level] || level;
-  return `icons/lv${Math.round(key)}.png`;
+  const iconKey = iconMap[level];
+  if (iconKey) {
+    return `icons/${iconKey}.png`;
+  }
+
+  const numLevel = parseFloat(level);
+  if (!isNaN(numLevel)) {
+    return `icons/lv${Math.round(numLevel)}.png`;
+  }
+
+  return `icons/lv${level}.png`; // fallback nếu không parse được
 }
 
 function createRow(data, index) {
