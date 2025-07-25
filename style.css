@@ -1,70 +1,76 @@
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background: #111;
-  color: #fff;
-  padding: 20px;
+  margin: 0;
+  padding: 0;
+  background: #f5f5f5;
+  color: #333;
 }
 
 .container {
-  max-width: 800px;
-  margin: auto;
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
 }
 
-#searchInput {
-  width: 100%;
-  padding: 10px;
+h1 {
+  text-align: center;
+  font-size: 2rem;
   margin-bottom: 20px;
-  font-size: 16px;
 }
 
-.game-list {
+input#searchInput {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 16px;
+  margin-bottom: 25px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+}
+
+.grid-container {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
-.game-item {
+.data-row {
   display: flex;
   align-items: center;
-  padding: 10px;
-  background: #222;
-  border-radius: 8px;
-  box-shadow: 0 0 5px #444;
-}
-
-.game-item img {
-  width: 48px;
-  height: 48px;
-  margin-right: 16px;
-}
-
-.game-name {
-  font-weight: bold;
-  flex: 1;
-}
-
-.own-rate {
-  font-size: 14px;
-  color: #aaa;
-}
-
-.pagination {
-  margin-top: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  justify-content: center;
-}
-
-.pagination button {
-  background: #333;
-  color: white;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 5px;
+  gap: 15px;
+  padding: 12px 16px;
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  transition: 0.2s;
   cursor: pointer;
 }
 
-.pagination button.active {
-  background: #f06292;
+.data-row:hover {
+  background: #f0f0f0;
+  transform: scale(1.01);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.level-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.own-rate {
+  width: 80px;
+  font-weight: bold;
+  color: #444;
+}
+
+.game-name {
+  flex-grow: 1;
+  font-size: 1rem;
 }
