@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Details</title>
+</head>
+<body>
+  <h1>Chi tiết level</h1>
+  <p>ID: <span id="levelId"></span></p>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    document.getElementById('levelId').textContent = id;
+  </script>
+</body>
+</html>
