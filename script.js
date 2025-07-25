@@ -1,86 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Level Detail</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="container">
-    <a href="index.html">← Quay lại</a>
-    <div id="detail">Đang tải dữ liệu...</div>
-  </div>
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const no = params.get("no");
-    
-    // Hàm lấy tên icon dựa vào giá trị level (đổi tên cho consistent với script.js)
-    function getIconName(level) {
-      const specialIcons = {
-        "-1": "lv1f",
-        "-2": "lv2f", 
-        "-3": "lv3f",
-        "U": "lvU",
-        "R": "lvR",
-        "P": "lvP",
-        "-46": "lvinf"
-      };
-      return specialIcons[level] || `lv${Math.floor(level)}`;
-    }
-    
-    // Fetch với error handling
-    fetch("https://opensheet.elk.sh/1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o/8")
-      .then(res => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then(data => {
-        const item = data.find(d => d.NO === no);
-        if (!item) {
-          document.getElementById("detail").innerHTML = `
-            <div style="text-align: center; color: #666; padding: 40px;">
-              <h3>Không tìm thấy dữ liệu</h3>
-              <p>Không tìm thấy item với NO: ${no}</p>
-            </div>
-          `;
-          return;
-        }
-        
-        const iconName = getIconName(item.Level);
-        const iconHTML = `<img src="icons/${iconName}.png" alt="Level ${item.Level}" style="height: 48px; vertical-align: middle; margin-right: 10px;">`;
-        
-        document.getElementById("detail").innerHTML = `
-          <div style="margin-bottom: 20px;">
-            <h2 style="display: flex; align-items: center; margin-bottom: 20px;">
-              ${iconHTML} ${item.Game}
-            </h2>
-          </div>
-          <div style="background: #f5f5f5; padding: 20px; border-radius: 8px;">
-            <ul style="list-style: none; padding: 0; margin: 0;">
-              ${Object.entries(item)
-                .filter(([k, v]) => v !== null && v !== undefined && v !== '')
-                .map(([k, v]) => `
-                  <li style="padding: 8px 0; border-bottom: 1px solid #ddd;">
-                    <strong style="color: #333; min-width: 120px; display: inline-block;">${k}:</strong> 
-                    <span style="color: #666;">${v}</span>
-                  </li>
-                `).join("")}
-            </ul>
-          </div>
-        `;
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-        document.getElementById("detail").innerHTML = `
-          <div style="text-align: center; color: #e74c3c; padding: 40px;">
-            <h3>Lỗi khi tải dữ liệu</h3>
-            <p>Không thể kết nối đến server. Vui lòng thử lại sau.</p>
-            <p style="font-size: 14px; color: #666;">Chi tiết lỗi: ${error.message}</p>
-          </div>
-        `;
-      });
-  </script>
-</body>
-</html>
+const spreadsheetId = '1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o';
+const sheetName = 'Sheet1';
+const url = `https://opensheet.elk.sh/${spreadsheetId}/${sheetName}`;
+
+const dataContainer = document.getElementById('dataContainer');
+const searchInput = document.getElementById('searchInput');
+const detailView = document.getElementById('detailView');
+const detailContent = document.getElementById('detailContent');
+const backButton = document.getElementById('backButton');
+
+function levelToIcon(level) {
+  const iconMap = {
+    '-1': 'lv1f',
+    '-2': 'lv2f',
+    '-3': 'lv3f',
+    'U': 'lvU',
+    'R': 'lvR',
+    '-46': 'lvinf'
+  };
+
+  if (iconMap[level]) return iconMap[level];
+
+  const base = Math.floor(Number(level));
+  const decimal = (Number(level) - base).toFixed(1);
+  const stars = decimal === '0.1' ? '⭑' : decimal === '0.2' ? '⭑⭑' : '';
+
+  return `lv${base}${stars}`;
+}
+
+function createRow(item) {
+  const div = document.createElement('div');
+  div.className = 'row';
+  div.innerHTML = `
+    <img src="icons/${levelToIcon(item.Level)}.png" alt="${item.Level}" class="icon">
+    <span class="rate">${item['Own Rate']}</span>
+    <span class="name">${item['Game Name']}</span>
+  `;
+  div.addEventListener('click', () => showDetail(item));
+  return div;
+}
+
+function showDetail(item) {
+  detailView.classList.remove('hidden');
+  dataContainer.style.display = 'none';
+  searchInput.style.display = 'none';
+  detailContent.innerHTML = `
+    <h2>${item['Game Name']}</h2>
+    <img src="icons/${levelToIcon(item.Level)}.png" alt="${item.Level}" class="icon-large">
+    <p><strong>Level:</strong> ${item.Level}</p>
+    <p><strong>Own Rate:</strong> ${item['Own Rate']}</p>
+    <p><strong>More Info:</strong> (Thêm thông tin ở đây nếu cần)</p>
+  `;
+}
+
+backButton.addEventListener('click', () => {
+  detailView.classList.add('hidden');
+  dataContainer.style.display = '';
+  searchInput.style.display = '';
+});
+
+function renderData(data) {
+  dataContainer.innerHTML = '';
+  data.forEach(item => {
+    const row = createRow(item);
+    dataContainer.appendChild(row);
+  });
+}
+
+fetch(url)
+  .then(res => res.json())
+  .then(data => {
+    let allData = data;
+    renderData(allData);
+
+    searchInput.addEventListener('input', e => {
+      const keyword = e.target.value.toLowerCase();
+      const filtered = allData.filter(item => item['Game Name'].toLowerCase().includes(keyword));
+      renderData(filtered);
+    });
+  });
