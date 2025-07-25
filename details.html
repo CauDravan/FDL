@@ -74,12 +74,8 @@
         container.innerHTML = fields.map(field => `
           <div class="detail-row">
             <span>${field}:</span>
-            <div>${
-              field === 'Video'
-                ? `<a href="${entry[field]}" target="_blank">${entry[field]}</a>`
-                : entry[field] || '-'
-            }</div>
-            </div>
+            <div>${entry[field] || '-'}</div>
+          </div>
         `).join('');
       })
       .catch(err => {
