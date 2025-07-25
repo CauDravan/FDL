@@ -1,76 +1,60 @@
-* {
-  box-sizing: border-box;
-  font-family: "Segoe UI", sans-serif;
-}
-
 body {
+  font-family: sans-serif;
+  background-color: #f7f7f7;
   margin: 0;
   padding: 0;
-  background: #f5f5f5;
-  color: #333;
 }
 
 .container {
-  max-width: 900px;
-  margin: 40px auto;
+  max-width: 1000px;
+  margin: 0 auto;
   padding: 20px;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.05);
 }
 
 h1 {
   text-align: center;
-  font-size: 2rem;
-  margin-bottom: 20px;
 }
 
-input#searchInput {
+#searchInput {
   width: 100%;
-  padding: 10px 15px;
+  padding: 10px;
+  margin-bottom: 20px;
   font-size: 16px;
-  margin-bottom: 25px;
-  border: 1px solid #ccc;
-  border-radius: 12px;
 }
 
 .grid-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
 }
 
-.data-row {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 12px 16px;
-  background: #fafafa;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  transition: 0.2s;
+.grid-item {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 10px;
+  text-align: center;
   cursor: pointer;
+  transition: transform 0.2s ease-in-out;
 }
 
-.data-row:hover {
-  background: #f0f0f0;
-  transform: scale(1.01);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+.grid-item:hover {
+  transform: scale(1.05);
 }
 
-.level-icon {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
+.grid-item img {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
 }
 
-.own-rate {
-  width: 80px;
+.grid-item .own-rate {
   font-weight: bold;
-  color: #444;
+  color: #4CAF50;
+  margin-bottom: 5px;
 }
 
-.game-name {
-  flex-grow: 1;
-  font-size: 1rem;
+.grid-item .game-name {
+  font-size: 14px;
+  color: #333;
 }
