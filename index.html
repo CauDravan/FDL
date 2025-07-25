@@ -2,20 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FDL Data Viewer</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FDL Level Viewer</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
   <div class="container">
-    <h1>FDL Levels</h1>
+    <h1>FDL Level Viewer</h1>
     <input type="text" id="searchInput" placeholder="Search game name..." />
-    <div id="dataContainer"></div>
+    <div id="dataContainer" class="grid-container"></div>
   </div>
-  <div id="detailView" class="hidden">
-    <button id="backButton">← Back</button>
-    <div id="detailContent"></div>
-  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
