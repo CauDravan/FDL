@@ -1,60 +1,29 @@
-body {
-  font-family: sans-serif;
-  background-color: #f7f7f7;
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-h1 {
-  text-align: center;
-}
-
-#searchInput {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  font-size: 16px;
-}
-
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 16px;
-}
-
-.grid-item {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  padding: 10px;
-  text-align: center;
+.card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin: 8px 0;
   cursor: pointer;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.2s ease;
+  gap: 30px; /* thêm khoảng cách giữa các thành phần */
 }
 
-.grid-item:hover {
-  transform: scale(1.05);
+.card:hover {
+  transform: scale(1.01);
 }
 
-.grid-item img {
-  width: 50px;
-  height: 50px;
-  margin-bottom: 10px;
+.card img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
 }
 
-.grid-item .own-rate {
-  font-weight: bold;
-  color: #4CAF50;
-  margin-bottom: 5px;
-}
-
-.grid-item .game-name {
-  font-size: 14px;
+.card span {
+  font-size: 16px;
   color: #333;
+  flex-shrink: 0;
 }
