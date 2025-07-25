@@ -1,5 +1,5 @@
 const sheetId = '1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o';
-const sheetName = "'Level(Cd)'A:T";
+const sheetName = 'Level(Cd)';
 const url = `https://opensheet.elk.sh/${sheetId}/${sheetName}`;
 
 const iconMap = {
