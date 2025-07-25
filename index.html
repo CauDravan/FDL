@@ -2,16 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Level Viewer</title>
+  <title>Level Detail</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <input type="text" id="searchInput" placeholder="Tìm tên game..." />
-    <div id="gameList" class="game-list"></div>
+    <a href="index.html">← Quay lại</a>
+    <div id="detail">Đang tải dữ liệu...</div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const no = params.get("no");
+
+    fetch("https://opensheet.elk.sh/1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o/0")
+      .then(res => res.json())
+      .then(data => {
+        const item = data.find(d => d.NO === no);
+        if (!item) return document.getElementById("detail").textContent = "Không tìm thấy dữ liệu.";
+
+        document.getElementById("detail").innerHTML = `
+          <h2>${item.Game}</h2>
+          <ul>
+            ${Object.entries(item).map(([k, v]) => `<li><strong>${k}</strong>: ${v}</li>`).join("")}
+          </ul>
+        `;
+      });
+  </script>
 </body>
 </html>
