@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Home | FDL | Forums Difficulty Level</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Level Viewer</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-    <h1>CD clears</h1>
-    <table id="cd-table">
-        <thead id="table_head"></thead>
-        <tbody id="table_body"></tbody>
-    </table>
-    <script src="script.js" defer></script>
-</body>
+  <div class="container">
+    <input type="text" id="searchInput" placeholder="Tìm tên game..." />
+    <div id="gameList" class="game-list"></div>
+  </div>
 
+  <script src="script.js"></script>
+</body>
 </html>
