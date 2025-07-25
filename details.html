@@ -54,7 +54,7 @@
     const url = `https://opensheet.elk.sh/${sheetId}/${sheetName}`;
 
     const queryParams = new URLSearchParams(window.location.search);
-    const id = parseInt(queryParams.get('id'), 10);
+    const id = queryParams.get('id'); // giữ nguyên string để so sánh
 
     const fields = [
       'NO', 'Date', 'ID', 'FDG', 'Game', 'Developer', 'Level', 'Own Rate', 'Rate',
@@ -64,17 +64,24 @@
     fetch(url)
       .then(res => res.json())
       .then(data => {
-        const entry = data[id];
+        const entry = data.find(row => row['NO'] === id);
         const container = document.getElementById('detailsContainer');
+
         if (!entry) {
-          container.innerHTML = `<p>Không tìm thấy level có ID ${id}</p>`;
+          container.innerHTML = `<p>Không tìm thấy level có NO = ${id}</p>`;
           return;
         }
 
         container.innerHTML = fields.map(field => `
           <div class="detail-row">
             <span>${field}:</span>
-            <div>${entry[field] || '-'}</div>
+            <div>
+              ${
+                field === 'Video' && entry[field]
+                  ? `<a href="${entry[field]}" target="_blank">${entry[field]}</a>`
+                  : entry[field] || '-'
+              }
+            </div>
           </div>
         `).join('');
       })
