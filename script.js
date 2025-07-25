@@ -23,13 +23,14 @@ function getIconFile(level) {
     return `icons/lv${Math.floor(numLevel)}.png`;
   }
 
-  return `icons/lv${level}.png`; // fallback nếu không parse được
+  return `icons/lv${level}.png`;
 }
 
-// ✅ Dùng NO làm id duy nhất
+// ✅ Dùng ID thật (NO) thay vì index
 function createRow(data) {
   const container = document.createElement('div');
   container.className = 'data-row';
+
   container.onclick = () => {
     window.location.href = `details.html?id=${data['NO']}`;
   };
