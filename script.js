@@ -75,7 +75,7 @@ function displayData(data) {
 document.getElementById('searchInput').addEventListener('input', (e) => {
   const query = e.target.value.toLowerCase();
   const filtered = window.allData.filter(row =>
-    row['Game Name']?.toLowerCase().includes(query)
+    row['Game']?.toLowerCase().includes(query)
   );
   displayData(filtered);
 });
