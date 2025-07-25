@@ -35,7 +35,7 @@ function createRow(data, index) {
 
   const gameName = document.createElement('div');
   gameName.className = 'game-name';
-  gameName.textContent = data['Game Name'] || '(No name)';
+  gameName.textContent = data['Game'] || '(No name)';
 
   container.appendChild(icon);
   container.appendChild(ownRate);
