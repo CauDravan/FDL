@@ -1,71 +1,86 @@
-let allData = [];
-let currentPage = 1;
-const pageSize = 30;
-
-fetch("https://opensheet.elk.sh/1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o/0")
-  .then(res => res.json())
-  .then(data => {
-    allData = data;
-    renderList(); // ✅ gọi tại đây mới đúng
-  });
-
-document.getElementById("searchInput").addEventListener("input", e => {
-  renderList(e.target.value);
-});
-
-function renderList(filter = "") {
-  const gameList = document.getElementById("gameList");
-  gameList.innerHTML = "";
-
-  const filtered = allData.filter(item =>
-    item.Game.toLowerCase().includes(filter.toLowerCase())
-  );
-
-  const start = (currentPage - 1) * pageSize;
-  const end = start + pageSize;
-  const pageData = filtered.slice(start, end);
-
-  pageData.forEach(item => {
-    const iconName = getIconName(item.Level);
-
-    const div = document.createElement("div");
-    div.className = "game-item";
-    div.innerHTML = `
-      <img src="icons/${iconName}.png" alt="Lv ${item.Level}" />
-      <div class="game-name">${item.Game}</div>
-      <div class="own-rate">${item["Own Rate"]}</div>
-    `;
-    div.onclick = () => window.location.href = `detail.html?no=${item.NO}`;
-    gameList.appendChild(div);
-  });
-
-  renderPagination(filtered.length);
-}
-
-function getIconName(level) {
-  if (level === "P") return "lvP";
-  if (level === "U") return "lvU";
-  if (level === "R") return "lvR";
-  if (level === -1 || level === "-1") return "lv1f";
-  if (level === -2 || level === "-2") return "lv2f";
-  if (level === -3 || level === "-3") return "lv3f";
-  if (level === -46 || level === "-46") return "lvinf";
-  return `lv${Math.floor(level)}`;
-}
-
-function renderPagination(totalItems) {
-  const pagination = document.getElementById("pagination");
-  pagination.innerHTML = ""; // Xoá pagination cũ
-
-  const totalPages = Math.ceil(totalItems / pageSize);
-  for (let i = 1; i <= totalPages; i++) {
-    const btn = document.createElement("button");
-    btn.textContent = i;
-    btn.className = (i === currentPage) ? "active" : "";
-    btn.onclick = () => {
-      currentPage = i;
-      renderList(document.getElementById("searchInput").value);
-    };
-    pagination.appendChild(btn);
-  }
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Level Detail</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <a href="index.html">← Quay lại</a>
+    <div id="detail">Đang tải dữ liệu...</div>
+  </div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const no = params.get("no");
+    
+    // Hàm lấy tên icon dựa vào giá trị level (đổi tên cho consistent với script.js)
+    function getIconName(level) {
+      const specialIcons = {
+        "-1": "lv1f",
+        "-2": "lv2f", 
+        "-3": "lv3f",
+        "U": "lvU",
+        "R": "lvR",
+        "P": "lvP",
+        "-46": "lvinf"
+      };
+      return specialIcons[level] || `lv${Math.floor(level)}`;
+    }
+    
+    // Fetch với error handling
+    fetch("https://opensheet.elk.sh/1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o/0")
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then(data => {
+        const item = data.find(d => d.NO === no);
+        if (!item) {
+          document.getElementById("detail").innerHTML = `
+            <div style="text-align: center; color: #666; padding: 40px;">
+              <h3>Không tìm thấy dữ liệu</h3>
+              <p>Không tìm thấy item với NO: ${no}</p>
+            </div>
+          `;
+          return;
+        }
+        
+        const iconName = getIconName(item.Level);
+        const iconHTML = `<img src="icons/${iconName}.png" alt="Level ${item.Level}" style="height: 48px; vertical-align: middle; margin-right: 10px;">`;
+        
+        document.getElementById("detail").innerHTML = `
+          <div style="margin-bottom: 20px;">
+            <h2 style="display: flex; align-items: center; margin-bottom: 20px;">
+              ${iconHTML} ${item.Game}
+            </h2>
+          </div>
+          <div style="background: #f5f5f5; padding: 20px; border-radius: 8px;">
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              ${Object.entries(item)
+                .filter(([k, v]) => v !== null && v !== undefined && v !== '')
+                .map(([k, v]) => `
+                  <li style="padding: 8px 0; border-bottom: 1px solid #ddd;">
+                    <strong style="color: #333; min-width: 120px; display: inline-block;">${k}:</strong> 
+                    <span style="color: #666;">${v}</span>
+                  </li>
+                `).join("")}
+            </ul>
+          </div>
+        `;
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        document.getElementById("detail").innerHTML = `
+          <div style="text-align: center; color: #e74c3c; padding: 40px;">
+            <h3>Lỗi khi tải dữ liệu</h3>
+            <p>Không thể kết nối đến server. Vui lòng thử lại sau.</p>
+            <p style="font-size: 14px; color: #666;">Chi tiết lỗi: ${error.message}</p>
+          </div>
+        `;
+      });
+  </script>
+</body>
+</html>
