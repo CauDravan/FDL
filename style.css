@@ -90,11 +90,12 @@ input#searchInput {
 
 .sub-icon {
   position: absolute;
-  top: -6px;
-  left: -6px;
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  background: #1e1e1e;
-  padding: 1px;
+  top: -4px;
+  left: -4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  /* Xoá nền đen */
+  background: none;
+  padding: 0;
 }
