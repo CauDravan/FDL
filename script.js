@@ -58,7 +58,7 @@ function createRow(data) {
   ownRateWrapper.className = 'own-rate';
 
   const fdg = document.createElement('div');
-  fdg.className = 'fdg-code';
+  fdg.className = 'id-code';
   fdg.textContent = `#${data.ID}`;
 
   const ownRateText = document.createElement('div');
