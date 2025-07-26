@@ -10,12 +10,17 @@
 <body>
   <div class="container">
     <h1>CD Clears</h1>
+    <div class="search-bar-wrapper">
     <input type="text" id="searchInput" placeholder="Search game name..." />
-    <small id="searchHint" style="color: #aaa; display: block; margin-bottom: 15px;">
-      💡 Try filters like: <br>
-      <code>level=45</code>, <code>game=sudoku</code>, <code>genre=#puzzle-video-game</code>, <code>id=123</code><br>
-      Combine filters using commas: <code>(game=nonogram, level=46)</code>
-    </small>
+    <button id="hintToggle" title="Search help">?</button>
+  </div>
+  <div id="searchHint" class="search-hint hidden">
+    💡 Try filters like:<br />
+    <code>level=45</code>, <code>game=sudoku</code>, <code>genre=#puzzle-video-game</code>, <code>id=123</code><br />
+    Combine filters using commas:<br />
+    <code>(game=nonogram, level=46)</code>
+  </div>
+
 
     <div id="dataContainer" class="grid-container"></div>
   </div>
