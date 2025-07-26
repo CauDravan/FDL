@@ -142,3 +142,8 @@ document.getElementById('searchInput').addEventListener('input', (e) => {
 });
 
 loadData();
+
+document.getElementById('hintToggle').addEventListener('click', () => {
+  const hint = document.getElementById('searchHint');
+  hint.classList.toggle('hidden');
+});
