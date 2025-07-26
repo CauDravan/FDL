@@ -54,16 +54,25 @@ function createRow(data) {
     iconWrapper.appendChild(subIcon);
   }
 
-  const ownRate = document.createElement('div');
-  ownRate.className = 'own-rate';
-  ownRate.textContent = data['Own Rate'] || '-';
+  const ownRateWrapper = document.createElement('div');
+  ownRateWrapper.className = 'own-rate';
+
+  const fdg = document.createElement('div');
+  fdg.className = 'fdg-code';
+  fdg.textContent = `#${data.ID}`;
+
+  const ownRateText = document.createElement('div');
+  ownRateText.textContent = data['Own Rate'] || '-';
+
+  ownRateWrapper.appendChild(fdg);
+  ownRateWrapper.appendChild(ownRateText);
 
   const gameName = document.createElement('div');
   gameName.className = 'game-name';
   gameName.textContent = data['Game'] || '(No name)';
 
   container.appendChild(iconWrapper);
-  container.appendChild(ownRate);
+  container.appendChild(ownRateWrapper);
   container.appendChild(gameName);
 
   return container;
