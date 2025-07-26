@@ -35,10 +35,24 @@ function createRow(data) {
     window.location.href = `details.html?id=${data['NO']}`;
   };
 
+  const iconWrapper = document.createElement('div');
+  iconWrapper.className = 'icon-wrapper';
+
   const icon = document.createElement('img');
   icon.src = getIconFile(data.Level);
   icon.alt = data.Level;
   icon.className = 'level-icon';
+
+  iconWrapper.appendChild(icon);
+
+  // 👇 Nếu là P, R hoặc U → thêm icon con dựa vào BS
+  if (['P', 'R', 'U'].includes(data.Level)) {
+    const subIcon = document.createElement('img');
+    subIcon.src = getIconFile(data.BS);
+    subIcon.alt = data.BS;
+    subIcon.className = 'sub-icon';
+    iconWrapper.appendChild(subIcon);
+  }
 
   const ownRate = document.createElement('div');
   ownRate.className = 'own-rate';
@@ -48,7 +62,7 @@ function createRow(data) {
   gameName.className = 'game-name';
   gameName.textContent = data['Game'] || '(No name)';
 
-  container.appendChild(icon);
+  container.appendChild(iconWrapper);
   container.appendChild(ownRate);
   container.appendChild(gameName);
 
