@@ -99,3 +99,10 @@ input#searchInput {
   background: none;
   padding: 0;
 }
+
+.id-code {
+  font-size: 0.85rem;
+  color: #7fc1ff;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
