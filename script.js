@@ -98,10 +98,46 @@ function displayData(data) {
 }
 
 document.getElementById('searchInput').addEventListener('input', (e) => {
-  const query = e.target.value.toLowerCase();
-  const filtered = window.allData.filter(row =>
-    row['Game']?.toLowerCase().includes(query)
-  );
+  const query = e.target.value.trim();
+
+  // Nếu không có dấu = thì tìm theo game
+  if (!query.includes('=')) {
+    const filtered = window.allData.filter(row =>
+      row['Game']?.toLowerCase().includes(query.toLowerCase())
+    );
+    return displayData(filtered);
+  }
+
+  // Gỡ bỏ ngoặc nếu có (game=x, id=y)
+  const cleanQuery = query
+    .replace(/[()]/g, '')
+    .split(',')
+    .map(s => s.trim());
+
+  let filtered = window.allData;
+
+  cleanQuery.forEach(filter => {
+    const [key, value] = filter.split('=').map(x => x.trim().toLowerCase());
+
+    if (key === 'game') {
+      filtered = filtered.filter(row =>
+        row['Game']?.toLowerCase().includes(value)
+      );
+    } else if (key === 'genre') {
+      filtered = filtered.filter(row =>
+        row['Genres']?.toLowerCase().includes(value)
+      );
+    } else if (key === 'level') {
+      filtered = filtered.filter(row =>
+        Math.floor(parseFloat(row['BS'])) === parseInt(value)
+      );
+    } else if (key === 'id') {
+      filtered = filtered.filter(row =>
+        row['ID']?.toString() === value
+      );
+    }
+  });
+
   displayData(filtered);
 });
 
