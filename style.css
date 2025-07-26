@@ -147,6 +147,7 @@ input#searchInput {
   border-radius: 8px;
   color: #ccc;
   font-size: 14px;
+  line-height: 1.8;
 }
 
 .search-hint code {
