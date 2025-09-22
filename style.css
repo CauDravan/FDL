@@ -160,3 +160,20 @@ input#searchInput {
 .hidden {
   display: none;
 }
+
+.sheet-link {
+  text-decoration: none;
+  color: white; /* hoặc màu bạn muốn */
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* khoảng cách chữ với icon */
+}
+
+.sheet-link:hover {
+  text-decoration: underline;
+}
+
+.sheet-icon {
+  width: 24px; /* chỉnh kích thước icon */
+  height: 24px;
+}
