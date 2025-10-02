@@ -32,7 +32,7 @@ function createRow(data) {
   container.className = 'data-row';
 
   container.onclick = () => {
-    window.location.href = `details.html?id=${data['NO']}`;
+    window.location.href = `details.html?id=${data['IDL']}`;
   };
 
   const iconWrapper = document.createElement('div');
@@ -69,7 +69,7 @@ function createRow(data) {
 
   const gameName = document.createElement('div');
   gameName.className = 'game-name';
-  gameName.textContent = data['Game'] || '(No name)';
+  gameName.textContent = data['Game'] || '(IDL name)';
 
   container.appendChild(iconWrapper);
   container.appendChild(ownRateWrapper);
