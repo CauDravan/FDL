@@ -72,11 +72,11 @@
     fetch(url)
       .then(res => res.json())
       .then(data => {
-        const entry = data.find(row => row['NO'] === id);
+        const entry = data.find(row => row['IDL'] === id);
         const container = document.getElementById('detailsContainer');
 
         if (!entry) {
-          container.innerHTML = `<p>Không tìm thấy level có NO = ${id}</p>`;
+          container.innerHTML = `<p>Không tìm thấy level có IDL = ${id}</p>`;
           return;
         }
 
