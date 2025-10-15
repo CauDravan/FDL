@@ -103,7 +103,7 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 .row .icon img{ width:36px; height:36px; object-fit:contain; display:block; border-radius:6px; background:transparent; box-shadow:none; border:0 }
 
 /* row content: two lines */
-.row .line1{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:6px; }
+.row .line1{ display:flex; align-items:center; gap:6px; margin-bottom:6px; justify-content:flex-start; }
 .row .id-left{ color:var(--accent1); font-weight:700; font-size:13px; }
 .row .game-right{
   color:var(--text);
