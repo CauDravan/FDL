@@ -170,23 +170,12 @@ document.addEventListener('DOMContentLoaded', () => {
       type.className = 'type';
       type.textContent = g;
 
-      // icon cell: choose topRow icon if available
-      const iconCell = document.createElement('div');
-      iconCell.className = 'icon-cell';
-      const img = document.createElement('img');
-      const topRow = s.topRow;
-      if (topRow) img.src = getIconFile(topRow.Level || topRow.BS);
-      else img.src = 'icons/lv_unknown.png';
-      img.alt = '';
-      iconCell.appendChild(img);
-
       // played/games/exp
       const played = document.createElement('div'); played.style.textAlign = 'right'; played.textContent = s.played;
       const games = document.createElement('div'); games.style.textAlign = 'right'; games.textContent = s.games.size;
       const exp = document.createElement('div'); exp.style.textAlign = 'right'; exp.textContent = Math.round(s.exp).toLocaleString();
 
       r.appendChild(type);
-      r.appendChild(iconCell);
       r.appendChild(played);
       r.appendChild(games);
       r.appendChild(exp);
