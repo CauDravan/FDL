@@ -1,148 +1,220 @@
-// script.js — dashboard logic (Orbitron theme, neon styling)
-// wrapped on DOMContentLoaded for GitHub Pages safety
+// script.js - updated rendering for compact middle rows and genre table
 document.addEventListener('DOMContentLoaded', () => {
   const sheetId = '1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o';
   const sheetName = 'Level(Cd)';
   const url = `https://opensheet.elk.sh/${sheetId}/${sheetName}`;
 
-  // icon map (adjust to your icons/ folder filenames)
   const iconMap = { '-1': 'lv1f', '-2': 'lv2f', '-3': 'lv3f', '-46': 'lvinf', 'P': 'lvP', 'U': 'lvU', 'R': 'lvR' };
 
-  function getIconFile(level){
+  function getIconFile(level) {
     if (level == null) return `icons/lv_unknown.png`;
-    const t = String(level).trim();
-    if (iconMap[t]) return `icons/${iconMap[t]}.png`;
-    const n = parseFloat(t);
-    if (!isNaN(n)) return `icons/lv${Math.floor(n)}.png`;
-    return `icons/lv${t}.png`;
+    const trimmed = String(level).trim();
+    if (iconMap[trimmed]) return `icons/${iconMap[trimmed]}.png`;
+    const numLevel = parseFloat(trimmed);
+    if (!isNaN(numLevel)) return `icons/lv${Math.floor(numLevel)}.png`;
+    return `icons/lv${trimmed}.png`;
   }
 
   function safeParseExp(v){
     if (v == null) return 0;
-    const cleaned = String(v).replace(/[^\d\.\-]/g,'');
-    const n = parseFloat(cleaned);
-    return isNaN(n) ? 0 : n;
+    const cleaned = String(v).replace(/[^\d\.\-]/g, '');
+    const parsed = parseFloat(cleaned);
+    return isNaN(parsed) ? 0 : parsed;
   }
 
-  // rendering helpers
   function createRow(data){
     const row = document.createElement('div');
-    row.className = 'row-item';
+    row.className = 'row';
     row.onclick = () => {
       const idl = data['IDL'] || '';
       window.location.href = `details.html?id=${encodeURIComponent(idl)}`;
     };
 
+    // icon top-left (small)
     const iconWrap = document.createElement('div');
-    iconWrap.className = 'row-icon';
-    const iconImg = document.createElement('img');
-    iconImg.className = 'level-icon';
-    iconImg.src = getIconFile(data.Level || data.BS);
-    iconImg.alt = String(data.Level || '');
-    iconImg.onerror = () => { iconImg.style.display = 'none'; };
-    iconWrap.appendChild(iconImg);
-
-    if (['P','R','U'].includes(String(data.Level))) {
-      const sub = document.createElement('img');
-      sub.className = 'sub-icon';
-      sub.src = getIconFile(data.BS);
-      sub.alt = String(data.BS || '');
-      sub.onerror = () => { sub.style.display = 'none'; };
-      iconWrap.appendChild(sub);
-    }
-
-    const meta = document.createElement('div');
-    meta.className = 'row-meta';
-    const idEl = document.createElement('div'); idEl.className = 'id-code'; idEl.textContent = `#${data.ID || '-'}`;
-    const ownEl = document.createElement('div'); ownEl.className = 'own-rate'; ownEl.textContent = data['Own Rate'] || '-';
-    meta.appendChild(idEl); meta.appendChild(ownEl);
-
-    const titleWrap = document.createElement('div');
-    titleWrap.className = 'row-title';
-    const gameEl = document.createElement('div'); gameEl.className = 'game'; gameEl.textContent = data['Game'] || (data['IDL'] || '(unknown)');
-    const descEl = document.createElement('div'); descEl.className = 'desc'; descEl.textContent = data['Own Rate'] ? data['Own Rate'] : (data['Level'] || '');
-    titleWrap.appendChild(gameEl); titleWrap.appendChild(descEl);
-
+    iconWrap.className = 'icon';
+    const img = document.createElement('img');
+    img.src = getIconFile(data.Level || data.BS);
+    img.alt = data.Level || '';
+    // ensure transparent/background removed — rely on icon PNG itself
+    iconWrap.appendChild(img);
     row.appendChild(iconWrap);
-    row.appendChild(meta);
-    row.appendChild(titleWrap);
 
+    // First line: left = "#ID -", right = "Game"
+    const line1 = document.createElement('div');
+    line1.className = 'line1';
+    const idLeft = document.createElement('div');
+    idLeft.className = 'id-left';
+    idLeft.textContent = `#${data.ID || (data['IDL'] || '-')}`;
+    // right game name
+    const gameRight = document.createElement('div');
+    gameRight.className = 'game-right';
+    gameRight.textContent = data['Game'] || (data['IDL'] || '(unknown)');
+
+    // if you want combined "#512 - Futoshiki" visually, show hyphen on left and game on right
+    // show hyphen right after ID (we can include it as part of idLeft)
+    idLeft.textContent = `${idLeft.textContent} -`;
+
+    line1.appendChild(idLeft);
+    line1.appendChild(gameRight);
+
+    // second line: own rate (or Level short)
+    const line2 = document.createElement('div');
+    line2.className = 'line2';
+    line2.textContent = data['Own Rate'] || data['Level'] || '-';
+
+    row.appendChild(line1);
+    row.appendChild(line2);
     return row;
   }
 
-  // state
+  // data area
   window.allData = [];
-  let renderLimit = 200;
-  const INCR = 200;
 
-  async function fetchData(){
-    // show loader
-    const loader = document.getElementById('loader');
-    if (loader) loader.style.display = 'block';
-
-    try {
+  async function loadData(){
+    try{
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       if (!Array.isArray(json)) throw new Error('Unexpected data format');
       window.allData = json;
       computeAndRender(window.allData);
-      renderInitial();
-    } catch(err){
-      console.error('Load failed', err);
+      displayData(window.allData);
+    }catch(err){
+      console.error(err);
       const container = document.getElementById('dataContainer');
-      if (container) container.innerHTML = `<div style="color:#f88;padding:18px">Failed to load data: ${String(err)}. Check console/network.</div>`;
-      const g = document.getElementById('genreTable'); if (g) g.innerHTML = `<div style="color:#f88;padding:12px">Failed to load genres</div>`;
-    } finally {
-      const loader2 = document.getElementById('loader'); if (loader2) loader2.style.display = 'none';
+      if (container) container.innerHTML = `<div style="padding:18px;color:#f88">Error loading data: ${String(err)}</div>`;
+      const g = document.getElementById('genreTable'); if (g) g.innerHTML = `<div style="padding:12px;color:#f88">Error</div>`;
     }
   }
 
-  function renderInitial(){
+  function displayData(data){
     const container = document.getElementById('dataContainer');
     if (!container) return;
-    container.innerHTML = ''; // clear loader
-    if (!window.allData || window.allData.length === 0) {
-      container.innerHTML = `<div style="color:var(--muted);padding:18px">No data</div>`;
+    container.innerHTML = '';
+    if (!data || data.length === 0){
+      container.innerHTML = `<div style="padding:18px;color:var(--muted)">No data</div>`;
       return;
     }
-    const toRender = window.allData.slice(0, renderLimit);
-    toRender.forEach(r => container.appendChild(createRow(r)));
-
-    const btn = document.getElementById('loadMoreBtn');
-    if (window.allData.length > renderLimit) {
-      btn.classList.remove('hidden');
-      btn.textContent = `Load more (${window.allData.length - renderLimit} more)`;
-    } else {
-      btn.classList.add('hidden');
-    }
+    data.forEach(r => container.appendChild(createRow(r)));
   }
 
-  document.getElementById('loadMoreBtn').addEventListener('click', () => {
-    renderLimit += INCR;
-    renderInitial();
-  });
+  function computeAndRender(rows){
+    const totalRows = rows.length;
+    const uniqueIdl = new Set();
+    const uniqueGames = new Set();
+    let totalExp = 0;
+    const genreStats = {};
 
-  // search & filters (supports game, genre/type, level, id, idl)
+    rows.forEach(row => {
+      if (row['IDL'] != null) uniqueIdl.add(String(row['IDL']));
+      if (row['ID'] != null) uniqueGames.add(String(row['ID']));
+      totalExp += safeParseExp(row['Exp']);
+
+      const raw = String(row['Genres'] || '').trim();
+      const parts = raw === '' ? [] : raw.split(/[,;|]+/).map(s => s.trim()).filter(Boolean);
+      const list = parts.length ? parts : ['#unknown'];
+
+      list.forEach(g => {
+        if (!genreStats[g]) genreStats[g] = { played:0, games: new Set(), exp:0, topRow:null, topBS:-Infinity };
+        genreStats[g].played += 1;
+        if (row['ID'] != null) genreStats[g].games.add(String(row['ID']));
+        genreStats[g].exp += safeParseExp(row['Exp']);
+
+        // choose top row by BS numeric
+        const bs = parseFloat(String(row['BS'] || '').replace(/[^\d\.\-]/g,''));
+        if (!isFinite(bs)) {
+          const lv = parseFloat(String(row['Level'] || '').replace(/[^\d\.\-]/g,''));
+          if (isFinite(lv) && lv > genreStats[g].topBS) { genreStats[g].topBS = lv; genreStats[g].topRow = row; }
+        } else if (bs > genreStats[g].topBS) {
+          genreStats[g].topBS = bs; genreStats[g].topRow = row;
+        }
+      });
+    });
+
+    // top genre by played
+    const genres = Object.keys(genreStats);
+    let topGenre = genres.length ? genres[0] : '—';
+    genres.forEach(g => {
+      if (genreStats[g].played > (genreStats[topGenre]?.played || 0)) topGenre = g;
+    });
+
+    // render left summary
+    const byId = (id) => document.getElementById(id);
+    if (byId('totalRows')) byId('totalRows').textContent = totalRows;
+    if (byId('totalUniqueIdl')) byId('totalUniqueIdl').textContent = uniqueIdl.size;
+    if (byId('totalExp')) byId('totalExp').textContent = Math.round(totalExp).toLocaleString();
+    if (byId('topGenre')) byId('topGenre').textContent = topGenre;
+    if (byId('totalUniqueGames')) byId('totalUniqueGames').textContent = uniqueGames.size;
+
+    // render genre table: make columns aligned, icon only (no duplicate text)
+    const table = byId('genreTable');
+    if (!table) return;
+    table.innerHTML = '';
+
+    // header row (Type | Icon | Played | Games | Exp)
+    const head = document.createElement('div');
+    head.className = 'grid-head';
+    head.innerHTML = `<div>Type</div><div>Icon</div><div>Played</div><div>Games</div><div>Exp</div>`;
+    table.appendChild(head);
+
+    // sort by played
+    genres.sort((a,b) => genreStats[b].played - genreStats[a].played);
+    genres.forEach(g => {
+      const s = genreStats[g];
+      const r = document.createElement('div');
+      r.className = 'grid-row';
+
+      // type
+      const type = document.createElement('div');
+      type.className = 'type';
+      type.textContent = g;
+
+      // icon cell: choose topRow icon if available
+      const iconCell = document.createElement('div');
+      iconCell.className = 'icon-cell';
+      const img = document.createElement('img');
+      const topRow = s.topRow;
+      if (topRow) img.src = getIconFile(topRow.Level || topRow.BS);
+      else img.src = 'icons/lv_unknown.png';
+      img.alt = '';
+      iconCell.appendChild(img);
+
+      // played/games/exp
+      const played = document.createElement('div'); played.style.textAlign = 'right'; played.textContent = s.played;
+      const games = document.createElement('div'); games.style.textAlign = 'right'; games.textContent = s.games.size;
+      const exp = document.createElement('div'); exp.style.textAlign = 'right'; exp.textContent = Math.round(s.exp).toLocaleString();
+
+      r.appendChild(type);
+      r.appendChild(iconCell);
+      r.appendChild(played);
+      r.appendChild(games);
+      r.appendChild(exp);
+
+      table.appendChild(r);
+    });
+  }
+
+  // search handling (same as before)
   const searchEl = document.getElementById('searchInput');
   if (searchEl) {
     searchEl.addEventListener('input', (e) => {
       const q = e.target.value.trim();
-      if (!q) { renderLimit = INCR; renderInitial(); return; }
+      if (!window.allData) return;
+      if (q === '') { displayData(window.allData); return; }
       if (!q.includes('=')) {
-        const filtered = window.allData.filter(r => String(r['Game']||'').toLowerCase().includes(q.toLowerCase()));
-        displayFiltered(filtered);
-        return;
+        const filtered = window.allData.filter(r => (r['Game'] || '').toLowerCase().includes(q.toLowerCase()));
+        displayData(filtered); return;
       }
       const parts = q.replace(/[()]/g,'').split(',').map(s => s.trim()).filter(Boolean);
       let filtered = window.allData.slice();
       parts.forEach(p => {
         const [k,v] = p.split('=').map(s => s.trim().toLowerCase());
         if (!k) return;
-        if (k === 'game') filtered = filtered.filter(r => String(r['Game']||'').toLowerCase().includes(v));
+        if (k === 'game') filtered = filtered.filter(r => (r['Game']||'').toLowerCase().includes(v));
         else if (k === 'genre' || k === 'type') filtered = filtered.filter(r => {
-          const raw = String(r['Genres'] || '').toLowerCase();
-          return raw.split(/[,;|]+/).map(s => s.trim()).some(tag => tag.includes(v));
+          const raw = String(r['Genres']||'').toLowerCase();
+          return raw.split(/[,;|]+/).map(s=>s.trim()).some(tag => tag.includes(v));
         });
         else if (k === 'level') filtered = filtered.filter(r => {
           const bs = parseFloat(String(r['BS'] || r['Level'] || '').replace(/[^\d\.\-]/g,''));
@@ -151,24 +223,8 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (k === 'id') filtered = filtered.filter(r => String(r['ID']||'').toLowerCase() === v);
         else if (k === 'idl') filtered = filtered.filter(r => String(r['IDL']||'').toLowerCase() === v);
       });
-      displayFiltered(filtered);
+      displayData(filtered);
     });
-  }
-
-  function displayFiltered(list){
-    const container = document.getElementById('dataContainer');
-    container.innerHTML = '';
-    if (!list || list.length === 0) {
-      container.innerHTML = `<div style="color:var(--muted);padding:12px">No results</div>`;
-      document.getElementById('loadMoreBtn').classList.add('hidden');
-      return;
-    }
-    list.slice(0, renderLimit).forEach(r => container.appendChild(createRow(r)));
-    const btn = document.getElementById('loadMoreBtn');
-    if (list.length > renderLimit) {
-      btn.classList.remove('hidden');
-      btn.textContent = `Load more (${list.length - renderLimit} more)`;
-    } else btn.classList.add('hidden');
   }
 
   // hint toggle
@@ -178,75 +234,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (h) h.classList.toggle('hidden');
   });
 
-  // compute stats & render genre table
-  function computeAndRender(rows){
-    const totalRows = rows.length;
-    const uniqueIdl = new Set();
-    const uniqueGames = new Set();
-    let totalExp = 0;
-    const genreStats = {};
-
-    rows.forEach(r => {
-      const idl = r['IDL']; if (idl != null) uniqueIdl.add(String(idl));
-      const gid = r['ID']; if (gid != null) uniqueGames.add(String(gid));
-      totalExp += safeParseExp(r['Exp']);
-
-      const rawGenres = String(r['Genres'] || '').trim();
-      const parts = rawGenres === '' ? [] : rawGenres.split(/[,;|]+/).map(s => s.trim()).filter(Boolean);
-      const genres = parts.length ? parts : ['#unknown'];
-
-      genres.forEach(g => {
-        if (!genreStats[g]) genreStats[g] = { played:0, games: new Set(), exp:0, topRow: null, topVal:-Infinity };
-        genreStats[g].played += 1;
-        if (gid != null) genreStats[g].games.add(String(gid));
-        genreStats[g].exp += safeParseExp(r['Exp']);
-
-        const bsVal = parseFloat(String(r['BS'] || '').replace(/[^\d\.\-]/g,''));
-        const levelVal = parseFloat(String(r['Level'] || '').replace(/[^\d\.\-]/g,''));
-        const pickVal = isFinite(bsVal) ? bsVal : (isFinite(levelVal) ? levelVal : -Infinity);
-        if (pickVal > genreStats[g].topVal) { genreStats[g].topVal = pickVal; genreStats[g].topRow = r; }
-      });
-    });
-
-    // top genre by played
-    const keys = Object.keys(genreStats);
-    let topGenre = keys.length ? keys[0] : '—';
-    keys.forEach(k => { if (genreStats[k].played > (genreStats[topGenre]?.played || 0)) topGenre = k; });
-
-    // render left stats
-    const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-    setText('totalRows', totalRows);
-    setText('totalUniqueIdl', uniqueIdl.size);
-    setText('totalExp', Math.round(totalExp).toLocaleString());
-    setText('topGenre', topGenre);
-    setText('totalUniqueGames', uniqueGames.size);
-
-    // render genre table (right)
-    const table = document.getElementById('genreTable');
-    if (!table) return;
-    table.innerHTML = '';
-    if (keys.length === 0) { table.innerHTML = `<div class="placeholder">No genres</div>`; return; }
-
-    // header
-    const head = document.createElement('div'); head.className = 'genre-row';
-    head.innerHTML = `<div class="g-type" style="font-weight:800">Type</div><div style="font-weight:800">Title</div><div style="text-align:right;font-weight:800">Played</div><div style="text-align:right;font-weight:800">Games</div><div style="text-align:right;font-weight:800">Exp</div>`;
-    table.appendChild(head);
-
-    // sort by played desc
-    keys.sort((a,b) => genreStats[b].played - genreStats[a].played).forEach(k => {
-      const s = genreStats[k];
-      const r = document.createElement('div'); r.className = 'genre-row';
-      const top = s.topRow;
-      const iconSrc = top ? getIconFile(top.Level || top.BS) : 'icons/lv_unknown.png';
-      const titleHTML = `<div class="g-title"><img src="${iconSrc}" onerror="this.style.display='none'"/><div style="display:flex;flex-direction:column;"><div style="font-weight:700;color:var(--accent1)">${top ? (top.Level || '—') : '—'}</div><div style="font-size:12px;color:var(--muted)">${k}</div></div></div>`;
-      r.innerHTML = `<div class="g-type">${k}</div><div>${titleHTML}</div><div style="text-align:right">${s.played}</div><div style="text-align:right">${s.games.size}</div><div style="text-align:right">${Math.round(s.exp).toLocaleString()}</div>`;
-      table.appendChild(r);
-    });
-  }
-
-  // initial fetch
-  fetchData();
-
-  // expose for debugging
-  window._fdl = { getIconFile, computeAndRender };
+  // initial load
+  loadData();
 });
