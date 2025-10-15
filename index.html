@@ -1,79 +1,71 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>CD Clears — Dashboard</title>
+
+  <!-- Orbitron font -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@300;400;600;700&display=swap" rel="stylesheet">
+
   <link rel="icon" type="image/png" href="sob_cat.png" />
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="app">
     <!-- LEFT SIDEBAR -->
-    <aside class="sidebar left">
-      <div class="profile-card">
-        <img src="my_profile.png" alt="profile" class="profile-img" />
-        <h2 class="profile-name">Hiền</h2>
-        <p class="profile-bio">Puzzle lover • CD Clears collector • UI & data fan 💗</p>
-      </div>
+    <aside class="sidebar left" id="leftSidebar">
+      <div class="left-inner">
+        <div class="avatar-wrap">
+          <img src="my_profile.png" alt="Avatar" class="avatar" />
+        </div>
+        <h2 class="name">Hiền</h2>
+        <p class="bio">Puzzle lover · CD Clears collector · UI & data fan</p>
 
-      <div class="stats-card">
-        <h3>Chỉ số tổng quan</h3>
-        <div class="stat">
-          <span class="label">Tổng rows (clears):</span>
-          <span id="totalRows" class="value">—</span>
-        </div>
-        <div class="stat">
-          <span class="label">Tổng unique IDL:</span>
-          <span id="totalUniqueIdl" class="value">—</span>
-        </div>
-        <div class="stat">
-          <span class="label">Tổng Exp:</span>
-          <span id="totalExp" class="value">—</span>
-        </div>
-        <div class="stat">
-          <span class="label">Thể loại clear nhiều nhất:</span>
-          <span id="topGenre" class="value">—</span>
-        </div>
-        <div class="stat">
-          <span class="label">Tổng unique game (ID):</span>
-          <span id="totalUniqueGames" class="value">—</span>
-        </div>
+        <div class="stats-title">Overview</div>
+        <div class="stat-row"><span class="stat-key">Total rows (clears):</span><span id="totalRows" class="stat-value">—</span></div>
+        <div class="stat-row"><span class="stat-key">Total unique IDL:</span><span id="totalUniqueIdl" class="stat-value">—</span></div>
+        <div class="stat-row"><span class="stat-key">Total Exp:</span><span id="totalExp" class="stat-value">—</span></div>
+        <div class="stat-row"><span class="stat-key">Top genre:</span><span id="topGenre" class="stat-value">—</span></div>
+        <div class="stat-row"><span class="stat-key">Total unique games (ID):</span><span id="totalUniqueGames" class="stat-value">—</span></div>
       </div>
     </aside>
 
-    <!-- MIDDLE (LIST & SEARCH) -->
+    <!-- MIDDLE -->
     <main class="main-col">
-      <header class="topbar">
-        <h1 class="title">
-          <img src="sheet_icon.png" alt="sheet" class="title-icon" />
-          CD Clears
-        </h1>
+      <header class="main-header">
+        <div class="title-left">
+          <img src="sheet_icon.png" alt="sheet" class="sheet-icon"/>
+          <h1 class="title">CD Clears</h1>
+        </div>
 
-        <div class="search-wrapper">
+        <div class="search-area">
           <input id="searchInput" placeholder="Search game name or use filters: game=sudoku, level=45, genre=#puzzle..." />
           <button id="hintToggle" title="Search help">?</button>
         </div>
       </header>
 
       <div id="searchHint" class="search-hint hidden">
-        💡 Try filters like:<br/>
-        <code>level=45</code>, <code>game=sudoku</code>, <code>genre=#puzzle-video-game</code>, <code>id=123</code><br/>
-        Combine with commas: <code>(game=nonogram, level=46)</code>
+        <strong>Tip:</strong> Try filters like: <code>level=45</code>, <code>game=sudoku</code>, <code>genre=#puzzle-video-game</code>, <code>id=123</code>.
+        Combine: <code>(game=nonogram, level=46)</code>
       </div>
 
-      <section id="dataContainer" class="list-grid">
+      <section id="dataContainer" class="list-area">
+        <div class="loader" id="loader">Loading data…</div>
         <!-- rows injected here -->
       </section>
+
+      <div class="list-controls">
+        <button id="loadMoreBtn" class="btn hidden">Load more</button>
+      </div>
     </main>
 
     <!-- RIGHT SIDEBAR -->
     <aside class="sidebar right">
-      <div class="genre-card">
-        <h3>Thống kê theo thể loại</h3>
+      <div class="right-inner">
+        <h3 class="genre-title">Statistics by Genre</h3>
         <div id="genreTable" class="genre-table">
-          <!-- table injected here -->
-          <div class="placeholder">Đang tải dữ liệu...</div>
+          <div class="placeholder">Loading genres…</div>
         </div>
       </div>
     </aside>
