@@ -16,7 +16,7 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 /* layout: left narrow, middle slimmer, right fat */
 .app{
   display:grid;
-  grid-template-columns: 240px 0.55fr 880px; /* middle thinner, right wider */
+  grid-template-columns: 240px 0.40fr 940px; /* middle thinner, right wider */
   gap:22px;
   padding:28px;
   align-items:start;
@@ -66,7 +66,16 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 .brand h1{ margin:0; color:var(--accent1); font-size:18px }
 
 .search-wrap{ display:flex; align-items:center; gap:8px }
-.search-wrap input{ width:420px; max-width:100%; padding:9px 12px; border-radius:10px; background:var(--glass); border:1px solid rgba(255,255,255,0.02); color:var(--text) }
+.search-wrap input {
+  width: 340px;
+  max-width: 100%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--glass);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  font-size: 13px;
+}
 .search-wrap button{ width:36px; height:36px; border-radius:8px; background:transparent; border:1px solid rgba(255,255,255,0.03); color:var(--muted) }
 
 /* hint */
@@ -125,14 +134,19 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 .genre-table .grid-head,
 .genre-table .grid-row{
   display:grid;
-  grid-template-columns: 1fr 72px 64px 64px; /* type | icon | played | games | exp (we will put icon in 2nd column) */
-  gap:12px;
+  grid-template-columns: 1fr 120px 80px 80px; /* type | icon | played | games | exp (we will put icon in 2nd column) */
+  gap:14px;
   align-items:center;
   padding:10px;
   border-radius:10px;
   background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
   margin-bottom:8px;
   border:1px solid rgba(255,255,255,0.02);
+}
+.genre-table .grid-row div {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .genre-table .grid-head{ font-weight:700; color:var(--muted); font-size:13px }
 .genre-table .grid-row .type{ color:var(--muted); font-weight:600; font-size:13px; }
