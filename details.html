@@ -1,65 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FDL Level Details</title>
   <link rel="icon" type="image/png" href="sob_cat.png" />
   <link rel="stylesheet" href="style.css" />
   <style>
-    .container { max-width: 900px; margin: 40px auto; padding: 20px; background: #121212; border-radius: 12px; color:#fff; }
-    .detail-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #333}
-    .detail-row span{font-weight:bold;color:#bbb}
-    .back-link{display:block;margin-top:20px;text-align:center;color:#888;text-decoration:none}
-    .back-link:hover{color:#fff}
+    /* small overrides for detail page layout */
+    body { display:flex; align-items:flex-start; justify-content:center; padding:28px; background:linear-gradient(180deg,#060606,#0b0b0b) }
+    .container{ max-width:880px; width:100%; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:14px; padding:22px; color:var(--text); border:1px solid rgba(255,102,204,0.03) }
+    h1{ color:var(--accent); text-align:center; margin-top:0 }
+    .detail-row{ display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.03) }
+    .detail-row span{ color:var(--muted); font-weight:700; width:180px }
+    .back-link{ display:inline-block; margin-top:16px; color:var(--accent); text-decoration:none; font-weight:700 }
+    .thumb{ width:72px; height:72px; object-fit:contain; border-radius:10px; }
+    .flexrow{ display:flex; gap:16px; align-items:center }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Level Details</h1>
-    <div id="detailsContainer">Loading...</div>
-    <a class="back-link" href="index.html">← Back to list</a>
+    <div id="detailsContainer">Đang tải...</div>
+    <a class="back-link" href="index.html">← Back to dashboard</a>
   </div>
 
   <script>
     const sheetId = '1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o';
     const sheetName = 'Level(Cd)';
     const url = `https://opensheet.elk.sh/${sheetId}/${sheetName}`;
-
     const queryParams = new URLSearchParams(window.location.search);
-    const id = queryParams.get('id');
+    const id = queryParams.get('id'); // IDL
 
-    const fields = [
-      'IDL', 'Date', 'ID', 'FDG', 'Game', 'Developer', 'Level', 'Own Rate', 'Rate',
-      'Genres', 'Feel', 'Exp', 'BS', 'Data', 'Vision', 'Speed', 'Acc', 'Str', 'Player', 'Video'
-    ];
+    const fields = [ 'IDL','Date','ID','FDG','Game','Developer','Level','Own Rate','Rate','Genres','Feel','Exp','BS','Data','Vision','Speed','Acc','Str','Player','Video' ];
+
+    function safeHTML(v){ return v == null || v === '' ? '-' : String(v).replace(/</g,'&lt;').replace(/>/g,'&gt;') }
 
     fetch(url)
       .then(res => res.json())
       .then(data => {
-        const entry = data.find(row => row['IDL'] === id);
+        const entry = (data || []).find(row => String(row['IDL']) === String(id));
         const container = document.getElementById('detailsContainer');
-
         if (!entry) {
-          container.innerHTML = `<p>Không tìm thấy level có IDL = ${id}</p>`;
+          container.innerHTML = `<p style="color:var(--muted)">Không tìm thấy level có IDL = ${safeHTML(id)}</p>`;
           return;
         }
 
-        container.innerHTML = fields.map(field => `
-          <div class="detail-row">
-            <span>${field}:</span>
-            <div>
-              ${
-                field === 'Video' && entry[field]
-                  ? `<a href="${entry[field]}" target="_blank">${entry[field]}</a>`
-                  : (entry[field] || '-')
-              }
-            </div>
-          </div>
-        `).join('');
+        container.innerHTML = fields.map(field => {
+          if (field === 'Video' && entry[field]) {
+            return `<div class="detail-row"><span>${field}:</span><div><a target="_blank" href="${entry[field]}">${safeHTML(entry[field])}</a></div></div>`;
+          }
+          // for small visuals (Level icons)
+          if (field === 'Level') {
+            const iconSrc = 'icons/lv' + (entry[field] ? String(entry[field]).replace(/[^\w\-\.]/g,'') : 'unknown') + '.png';
+            return `<div class="detail-row"><span>${field}:</span><div class="flexrow"><img class="thumb" src="${iconSrc}" onerror="this.style.display='none'"/><div>${safeHTML(entry[field])}</div></div></div>`;
+          }
+          return `<div class="detail-row"><span>${field}:</span><div>${safeHTML(entry[field])}</div></div>`;
+        }).join('');
       })
       .catch(err => {
-        document.getElementById('detailsContainer').innerHTML = `<p>Lỗi khi tải dữ liệu: ${err}</p>`;
+        document.getElementById('detailsContainer').innerHTML = `<p style="color:#f88">Lỗi khi tải dữ liệu: ${String(err)}</p>`;
         console.error(err);
       });
   </script>
