@@ -2,70 +2,60 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CD Clears — Dashboard</title>
-
+  <link rel="icon" type="image/png" href="sob_cat.png" />
   <!-- Orbitron font -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-  <link rel="icon" type="image/png" href="sob_cat.png" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="app">
-    <!-- LEFT SIDEBAR -->
-    <aside class="sidebar left" id="leftSidebar">
-      <div class="left-inner">
-        <div class="avatar-wrap">
-          <img src="my_profile.png" alt="Avatar" class="avatar" />
-        </div>
+    <!-- LEFT (profile) -->
+    <aside class="sidebar left">
+      <div class="profile-wrap">
+        <img src="my_profile.png" alt="avatar" class="avatar" />
         <h2 class="name">Hiền</h2>
         <p class="bio">Puzzle lover · CD Clears collector · UI & data fan</p>
+      </div>
 
-        <div class="stats-title">Overview</div>
-        <div class="stat-row"><span class="stat-key">Total rows (clears):</span><span id="totalRows" class="stat-value">—</span></div>
-        <div class="stat-row"><span class="stat-key">Total unique IDL:</span><span id="totalUniqueIdl" class="stat-value">—</span></div>
-        <div class="stat-row"><span class="stat-key">Total Exp:</span><span id="totalExp" class="stat-value">—</span></div>
-        <div class="stat-row"><span class="stat-key">Top genre:</span><span id="topGenre" class="stat-value">—</span></div>
-        <div class="stat-row"><span class="stat-key">Total unique games (ID):</span><span id="totalUniqueGames" class="stat-value">—</span></div>
+      <div class="panel stats">
+        <h3>Overview</h3>
+        <div class="line"><span>Total rows (clears):</span><strong id="totalRows">—</strong></div>
+        <div class="line"><span>Total unique IDL:</span><strong id="totalUniqueIdl">—</strong></div>
+        <div class="line"><span>Total Exp:</span><strong id="totalExp">—</strong></div>
+        <div class="line"><span>Top genre:</span><strong id="topGenre">—</strong></div>
+        <div class="line"><span>Total unique games (ID):</span><strong id="totalUniqueGames">—</strong></div>
       </div>
     </aside>
 
-    <!-- MIDDLE -->
+    <!-- MIDDLE (list) -->
     <main class="main-col">
-      <header class="main-header">
-        <div class="title-left">
-          <img src="sheet_icon.png" alt="sheet" class="sheet-icon"/>
-          <h1 class="title">CD Clears</h1>
+      <header class="topbar">
+        <div class="brand">
+          <img src="sheet_icon.png" class="sheet-icon" alt="sheet" />
+          <h1>CD Clears</h1>
         </div>
 
-        <div class="search-area">
+        <div class="search-wrap">
           <input id="searchInput" placeholder="Search game name or use filters: game=sudoku, level=45, genre=#puzzle..." />
-          <button id="hintToggle" title="Search help">?</button>
+          <button id="hintToggle">?</button>
         </div>
       </header>
 
       <div id="searchHint" class="search-hint hidden">
-        <strong>Tip:</strong> Try filters like: <code>level=45</code>, <code>game=sudoku</code>, <code>genre=#puzzle-video-game</code>, <code>id=123</code>.
-        Combine: <code>(game=nonogram, level=46)</code>
+        Try filters like: <code>level=45</code>, <code>game=sudoku</code>, <code>genre=#puzzle</code> — combine with commas.
       </div>
 
-      <section id="dataContainer" class="list-area">
-        <div class="loader" id="loader">Loading data…</div>
-        <!-- rows injected here -->
-      </section>
-
-      <div class="list-controls">
-        <button id="loadMoreBtn" class="btn hidden">Load more</button>
-      </div>
+      <section id="dataContainer" class="list"></section>
     </main>
 
-    <!-- RIGHT SIDEBAR -->
+    <!-- RIGHT (genre stats) -->
     <aside class="sidebar right">
-      <div class="right-inner">
-        <h3 class="genre-title">Statistics by Genre</h3>
+      <div class="panel genres">
+        <h3>Statistics by Genre</h3>
         <div id="genreTable" class="genre-table">
-          <div class="placeholder">Loading genres…</div>
+          <div class="placeholder">Loading...</div>
         </div>
       </div>
     </aside>
