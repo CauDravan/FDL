@@ -1,67 +1,78 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FDL Level Details</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Level Details — CD Clears</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="sob_cat.png" />
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* small overrides for detail page layout */
-    body { display:flex; align-items:flex-start; justify-content:center; padding:28px; background:linear-gradient(180deg,#060606,#0b0b0b) }
-    .container{ max-width:880px; width:100%; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:14px; padding:22px; color:var(--text); border:1px solid rgba(255,102,204,0.03) }
-    h1{ color:var(--accent); text-align:center; margin-top:0 }
-    .detail-row{ display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.03) }
-    .detail-row span{ color:var(--muted); font-weight:700; width:180px }
-    .back-link{ display:inline-block; margin-top:16px; color:var(--accent); text-decoration:none; font-weight:700 }
-    .thumb{ width:72px; height:72px; object-fit:contain; border-radius:10px; }
-    .flexrow{ display:flex; gap:16px; align-items:center }
+    body{ background: linear-gradient(180deg,#040306,#0b0612 60%); display:flex; align-items:flex-start; justify-content:center; padding:28px; font-family: "Orbitron", system-ui, -apple-system, "Segoe UI", Roboto, Arial; color:var(--text);}
+    .container{ width:100%; max-width:920px; border-radius:16px; padding:28px; background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005)); border:1px solid rgba(255,79,216,0.03); box-shadow: 0 20px 60px rgba(0,0,0,0.7); animation: fadeIn .36s ease both; }
+    @keyframes fadeIn{ from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none} }
+    h1{ text-align:center; color:var(--accent1); margin:0 0 16px; font-size:26px; }
+    .detail-row{ display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.02); align-items:center; }
+    .detail-row span{ color:var(--muted); font-weight:700; width:220px; font-size:13px; }
+    .value{ text-align:right; color:var(--text); }
+    .thumb{ width:54px; height:54px; object-fit:contain; border-radius:10px; }
+    .back{ display:inline-block; margin-top:18px; color:var(--accent1); text-decoration:none; font-weight:700; }
+    @media (max-width:700px){ .detail-row{ flex-direction:column; align-items:flex-start } .detail-row span{ width:auto } .value{ text-align:left } }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Level Details</h1>
-    <div id="detailsContainer">Đang tải...</div>
-    <a class="back-link" href="index.html">← Back to dashboard</a>
+    <div id="detailsContainer">Loading…</div>
+    <a class="back" href="index.html">← Back to dashboard</a>
   </div>
 
   <script>
-    const sheetId = '1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o';
-    const sheetName = 'Level(Cd)';
-    const url = `https://opensheet.elk.sh/${sheetId}/${sheetName}`;
-    const queryParams = new URLSearchParams(window.location.search);
-    const id = queryParams.get('id'); // IDL
+    (function(){
+      const sheetId = '1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o';
+      const sheetName = 'Level(Cd)';
+      const url = `https://opensheet.elk.sh/${sheetId}/${sheetName}`;
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
 
-    const fields = [ 'IDL','Date','ID','FDG','Game','Developer','Level','Own Rate','Rate','Genres','Feel','Exp','BS','Data','Vision','Speed','Acc','Str','Player','Video' ];
+      const fields = [ 'IDL','Date','ID','FDG','Game','Developer','Level','Own Rate','Rate','Genres','Feel','Exp','BS','Data','Vision','Speed','Acc','Str','Player','Video' ];
 
-    function safeHTML(v){ return v == null || v === '' ? '-' : String(v).replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+      function safeHTML(v){ return v == null || v === '' ? '-' : String(v).replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+      function getIconFile(level) {
+        if (level == null) return `icons/lv_unknown.png`;
+        const t = String(level).trim();
+        const map = { '-1':'lv1f','-2':'lv2f','-3':'lv3f','-46':'lvinf','P':'lvP','U':'lvU','R':'lvR' };
+        if (map[t]) return `icons/${map[t]}.png`;
+        const n = parseFloat(t);
+        if (!isNaN(n)) return `icons/lv${Math.floor(n)}.png`;
+        return `icons/lv${t}.png`;
+      }
 
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        const entry = (data || []).find(row => String(row['IDL']) === String(id));
-        const container = document.getElementById('detailsContainer');
-        if (!entry) {
-          container.innerHTML = `<p style="color:var(--muted)">Không tìm thấy level có IDL = ${safeHTML(id)}</p>`;
-          return;
-        }
+      fetch(url).then(res => {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      }).then(data => {
+        const entry = (data||[]).find(r => String(r['IDL']) === String(id));
+        const out = document.getElementById('detailsContainer');
+        if (!entry) { out.innerHTML = `<p style="color:var(--muted)">No level found with IDL = ${safeHTML(id)}</p>`; return; }
 
-        container.innerHTML = fields.map(field => {
-          if (field === 'Video' && entry[field]) {
-            return `<div class="detail-row"><span>${field}:</span><div><a target="_blank" href="${entry[field]}">${safeHTML(entry[field])}</a></div></div>`;
+        out.innerHTML = fields.map(f => {
+          if (f === 'Video' && entry[f]) {
+            return `<div class="detail-row"><span>${f}:</span><div class="value"><a target="_blank" href="${entry[f]}">${safeHTML(entry[f])}</a></div></div>`;
           }
-          // for small visuals (Level icons)
-          if (field === 'Level') {
-            const iconSrc = 'icons/lv' + (entry[field] ? String(entry[field]).replace(/[^\w\-\.]/g,'') : 'unknown') + '.png';
-            return `<div class="detail-row"><span>${field}:</span><div class="flexrow"><img class="thumb" src="${iconSrc}" onerror="this.style.display='none'"/><div>${safeHTML(entry[field])}</div></div></div>`;
+          if (f === 'Level') {
+            const icon = getIconFile(entry[f] || entry['BS']);
+            return `<div class="detail-row"><span>${f}:</span><div class="value" style="display:flex;justify-content:flex-end;align-items:center;gap:12px"><img class="thumb" src="${icon}" onerror="this.style.display='none'"/><div>${safeHTML(entry[f])}</div></div></div>`;
           }
-          return `<div class="detail-row"><span>${field}:</span><div>${safeHTML(entry[field])}</div></div>`;
+          return `<div class="detail-row"><span>${f}:</span><div class="value">${safeHTML(entry[f])}</div></div>`;
         }).join('');
-      })
-      .catch(err => {
-        document.getElementById('detailsContainer').innerHTML = `<p style="color:#f88">Lỗi khi tải dữ liệu: ${String(err)}</p>`;
+      }).catch(err => {
+        const out = document.getElementById('detailsContainer');
+        if (out) out.innerHTML = `<p style="color:#f88">Failed to load: ${String(err)}</p>`;
         console.error(err);
       });
+    })();
   </script>
 </body>
 </html>
