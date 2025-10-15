@@ -1,179 +1,44 @@
-* {
-  box-sizing: border-box;
-  font-family: "Segoe UI", sans-serif;
+:root{
+  --bg:#1a0e12; --panel:#27161a; --muted:#b7a9b0; --accent:#e91e63;
 }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#eee;font-family:Inter,system-ui,Segoe UI,Arial;}
+.app{display:flex;height:100vh;padding:18px;gap:20px}
 
-body {
-  margin: 0;
-  padding: 0;
-  background: #121212;
-  color: #e0e0e0;
+/* left sidebar */
+.sidebar-left{
+  width:260px;background:linear-gradient(180deg,#2a131a,#39171f);padding:16px;border-radius:12px;
+  box-shadow:0 6px 20px rgba(0,0,0,.6);display:flex;flex-direction:column;gap:14px;
 }
+.profile{display:flex;gap:12px;align-items:flex-start}
+.profile-img{width:48px;height:48px;border-radius:10px;object-fit:cover}
+.profile-intro{flex:1;color:#ffd7ff;opacity:.95;padding:8px;border-radius:8px;background:linear-gradient(180deg,#a7166a,#ff1380);min-height:48px;font-size:13px}
+.profile-stats h3,.more-stats h3{margin:0 0 8px 0;color:var(--muted);font-size:13px}
+#perfList,#statList{display:flex;flex-direction:column;gap:8px}
+.stat-item{background:#24121a;padding:8px;border-radius:8px;font-size:13px;color:#ddd}
 
-.container {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 20px;
-  background: #1e1e1e;
-  border-radius: 16px;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
-}
+/* main area */
+.main-area{flex:1;display:flex;flex-direction:column;gap:12px}
+.tabs{display:flex;gap:8px}
+.tab-btn{background:#ddd;color:#111;padding:8px 14px;border-radius:10px;border:none;cursor:pointer}
+.tab-btn.active{background:#eee;box-shadow:inset 0 -4px 0 rgba(0,0,0,.06)}
+.tab-panel{display:none;background:transparent;flex:1;overflow:auto}
+.tab-panel.active{display:block}
+.search-row{margin:8px 0}
+.search-row input{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #444;background:#111;color:#fff}
 
-h1 {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 20px;
-  color: #ffffff;
-}
+/* grid rows */
+.grid-container{display:flex;flex-direction:column;gap:10px}
+.data-row{display:flex;align-items:center;gap:12px;padding:10px;background:linear-gradient(180deg,#2d0f17,#3a0f1a);border-radius:10px;cursor:pointer}
+.icon-wrapper img.level-icon{width:64px;height:64px;border-radius:8px}
+.own-rate{min-width:90px;color:#fff}
+.game-name{flex:1;color:#fff;font-weight:600}
 
-input#searchInput {
-  width: 100%;
-  padding: 10px 15px;
-  font-size: 16px;
-  margin-bottom: 25px;
-  border: 1px solid #444;
-  border-radius: 12px;
-  background: #222;
-  color: #f0f0f0;
-}
+/* type table rows */
+.type-row{display:flex;align-items:center;gap:10px;padding:10px;background:#24121a;border-radius:8px}
+.type-key{width:220px;font-weight:700;color:#ffd7ff}
+.type-stats{display:flex;gap:12px;color:#ddd}
 
-.grid-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.data-row {
-  display: grid;
-  grid-template-columns: 48px 150px 1fr;
-  align-items: center;
-  gap: 20px;
-  padding: 12px 16px;
-  background: #2a2a2a;
-  border: 1px solid #333;
-  border-radius: 12px;
-  transition: 0.2s;
-  cursor: pointer;
-}
-
-.data-row:hover {
-  background: #333;
-}
-
-.level-icon {
-  width: 48px;
-  height: 48px;
-  flex-shrink: 0;
-}
-
-.own-rate {
-  min-width: 450px;
-  font-weight: bold;
-  color: #ffd8f0;
-}
-
-.game-name {
-  font-size: 1rem;
-  margin-left: auto;
-  padding-right: 12px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: #e0e0e0;
-}
-
-.icon-wrapper {
-  position: relative;
-  width: 48px;
-  height: 48px;
-}
-
-.sub-icon {
-  position: absolute;
-  top: -4px;
-  left: -4px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  /* Xoá nền đen */
-  background: none;
-  padding: 0;
-}
-
-.id-code {
-  font-size: 0.85rem;
-  color: #7fc1ff;
-  font-weight: bold;
-  margin-bottom: 2px;
-}
-
-.search-bar-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-#searchInput {
-  flex: 1;
-}
-
-#hintToggle {
-  position: absolute;
-  right: 10px;
-  top: 8px; /* ⬅️ Giảm từ 50% để đẩy lên cao hơn */
-  background: #444;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
-  line-height: 1;
-  padding: 0;
-}
-
-#hintToggle:hover {
-  background: #666;
-}
-
-.search-hint {
-  margin-top: 12px;       /* ⬅️ Tạo khoảng cách với input */
-  margin-bottom: 20px;    /* ⬅️ Tạo khoảng cách với hàng đầu tiên */
-  padding: 10px 14px;
-  background: #1e1e1e;
-  border-left: 4px solid #888;
-  border-radius: 8px;
-  color: #ccc;
-  font-size: 14px;
-  line-height: 1.8;
-}
-
-.search-hint code {
-  background: #2a2a2a;
-  padding: 2px 6px;
-  border-radius: 6px;
-  color: #ffc;
-}
-
-.hidden {
-  display: none;
-}
-
-.sheet-link {
-  text-decoration: none;
-  color: white; /* hoặc màu bạn muốn */
-  display: inline-flex;
-  align-items: center;
-  gap: 8px; /* khoảng cách chữ với icon */
-}
-
-.sheet-link:hover {
-  text-decoration: underline;
-}
-
-.sheet-icon {
-  width: 24px; /* chỉnh kích thước icon */
-  height: 24px;
-}
+/* tooltip */
+.tooltip{position:fixed;background:#111;padding:8px 10px;border-radius:8px;color:#fff;border:1px solid rgba(255,255,255,.06);z-index:9999;pointer-events:none;max-width:320px}
+.hidden{display:none}
