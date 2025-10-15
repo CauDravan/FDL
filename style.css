@@ -11,12 +11,12 @@
   --text:#e7e7ea;
 }
 *{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Arial; background: radial-gradient(1200px 500px at 10% 10%, rgba(192,79,255,0.06), transparent), linear-gradient(180deg, var(--bg1), var(--bg2)); color:var(--text); font-size:13px;}
+html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Arial; background: radial-gradient(1200px 500px at 10% 10%, rgba(192,79,255,0.06), transparent), linear-gradient(180deg, var(--bg1), var(--bg2)); color:var(--text); font-size:11px;}
 
 /* layout: left narrow, middle slimmer, right fat */
 .app{
   display:grid;
-  grid-template-columns: 240px 1fr 460px; /* middle thinner, right wider */
+  grid-template-columns: 240px 0.7fr 600px; /* middle thinner, right wider */
   gap:22px;
   padding:28px;
   align-items:start;
