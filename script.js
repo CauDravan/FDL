@@ -1,245 +1,271 @@
-// script.js - single safe file (IIFE) 
-(function () {
-  // CONFIG - change sheet id or sheet names here if needed
-  const SHEET_ID = '1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o';
-  const LEVEL_SHEET = 'Level(Cd)';
-  const STATS_SHEET = 'Stats(Cd)';
+// script.js
+const sheetId = '1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o';
+const sheetName = 'Level(Cd)';
+const url = `https://opensheet.elk.sh/${sheetId}/${sheetName}`;
 
-  const levelUrl = `https://opensheet.elk.sh/${SHEET_ID}/${encodeURIComponent(LEVEL_SHEET)}`;
-  const statsUrl = `https://opensheet.elk.sh/${SHEET_ID}/${encodeURIComponent(STATS_SHEET)}`;
+/* icon mapping: keep same names as your icons folder */
+const iconMap = {
+  '-1': 'lv1f',
+  '-2': 'lv2f',
+  '-3': 'lv3f',
+  '-46': 'lvinf',
+  'P': 'lvP',
+  'U': 'lvU',
+  'R': 'lvR'
+};
 
-  const iconMap = {
-    '-1': 'lv1f', '-2': 'lv2f', '-3': 'lv3f', '-46': 'lvinf', 'P': 'lvP', 'U': 'lvU', 'R': 'lvR'
+function getIconFile(level) {
+  if (level == null) return `icons/lv_unknown.png`;
+  const trimmed = String(level).trim();
+  if (iconMap[trimmed]) return `icons/${iconMap[trimmed]}.png`;
+  const numLevel = parseFloat(trimmed);
+  if (!isNaN(numLevel)) return `icons/lv${Math.floor(numLevel)}.png`;
+  return `icons/lv${trimmed}.png`;
+}
+
+function safeParseExp(v){
+  if (v == null) return 0;
+  // remove commas/other chars, keep digits, dot, minus
+  const cleaned = String(v).replace(/[^\d\.\-]/g, '');
+  const parsed = parseFloat(cleaned);
+  return isNaN(parsed) ? 0 : parsed;
+}
+
+function createRow(data){
+  const container = document.createElement('div');
+  container.className = 'data-row';
+  container.onclick = () => {
+    // go to details (use IDL)
+    window.location.href = `details.html?id=${encodeURIComponent(data['IDL'] || '')}`;
   };
 
-  function getIconFile(level) {
-    const key = iconMap[level];
-    if (key) return `icons/${key}.png`;
-    const n = parseFloat(level);
-    if (!isNaN(n)) return `icons/lv${Math.floor(n)}.png`;
-    return `icons/lv${level}.png`;
+  const iconWrapper = document.createElement('div');
+  iconWrapper.className = 'icon-wrapper';
+  const icon = document.createElement('img');
+  icon.src = getIconFile(data.Level || data.BS);
+  icon.alt = data.Level || '';
+  icon.className = 'level-icon';
+  iconWrapper.appendChild(icon);
+
+  if (['P','R','U'].includes(String(data.Level))) {
+    const subIcon = document.createElement('img');
+    subIcon.src = getIconFile(data.BS);
+    subIcon.alt = data.BS || '';
+    subIcon.className = 'sub-icon';
+    iconWrapper.appendChild(subIcon);
   }
 
-  function parseNum(v) {
-    if (v == null) return 0;
-    const n = parseFloat(String(v).replace(/[^0-9.\-]/g, ''));
-    return isNaN(n) ? 0 : n;
+  const ownRateWrapper = document.createElement('div');
+  ownRateWrapper.className = 'own-rate';
+  const fdg = document.createElement('div');
+  fdg.className = 'id-code';
+  fdg.textContent = `#${data.ID || '-'}`;
+  const ownRateText = document.createElement('div');
+  ownRateText.textContent = data['Own Rate'] || '-';
+  ownRateWrapper.appendChild(fdg);
+  ownRateWrapper.appendChild(ownRateText);
+
+  const gameName = document.createElement('div');
+  gameName.className = 'game-name';
+  gameName.textContent = data['Game'] || (data['IDL'] || '(unknown)');
+
+  container.appendChild(iconWrapper);
+  container.appendChild(ownRateWrapper);
+  container.appendChild(gameName);
+
+  return container;
+}
+
+/* --- Data & display --- */
+window.allData = [];
+
+async function loadData(){
+  try{
+    const res = await fetch(url);
+    const json = await res.json();
+    window.allData = Array.isArray(json) ? json : [];
+    computeAndRender(window.allData);
+    displayData(window.allData);
+  }catch(err){
+    console.error('Failed to load data:', err);
+    document.getElementById('dataContainer').innerHTML = `<div style="padding:18px;color:#f88">Lỗi tải dữ liệu. Kiểm tra internet hoặc opensheet API.</div>`;
   }
+}
 
-  // tooltip
-  const tooltipEl = document.getElementById('tooltip');
-  function showTooltip(html, ev) {
-    if (!tooltipEl) return;
-    tooltipEl.innerHTML = html;
-    tooltipEl.classList.remove('hidden');
-    if (ev) moveTooltip(ev);
+function displayData(data){
+  const container = document.getElementById('dataContainer');
+  container.innerHTML = '';
+  if (!data || data.length === 0){
+    container.innerHTML = `<div style="padding:18px;color:var(--muted)">Không có dữ liệu.</div>`;
+    return;
   }
-  function moveTooltip(ev) {
-    if (!tooltipEl) return;
-    const gap = 12;
-    const x = ev.clientX + gap;
-    const y = ev.clientY + gap;
-    tooltipEl.style.left = x + 'px';
-    tooltipEl.style.top = y + 'px';
-  }
-  function hideTooltip() { if (tooltipEl) tooltipEl.classList.add('hidden'); }
+  data.forEach(row => container.appendChild(createRow(row)));
+}
 
-  // rendering helpers
-  function createRowForLevel(row) {
-    const container = document.createElement('div');
-    container.className = 'data-row';
-    container.onclick = () => window.location.href = `details.html?id=${encodeURIComponent(row.IDL)}`;
+/* compute aggregated stats and render sidebars */
+function computeAndRender(rows){
+  const totalRows = rows.length;
+  const uniqueIdlSet = new Set();
+  const uniqueGameIdSet = new Set();
+  let totalExp = 0;
 
-    const iconWrapper = document.createElement('div');
-    iconWrapper.className = 'icon-wrapper';
-    const icon = document.createElement('img');
-    icon.className = 'level-icon';
-    icon.src = getIconFile(row.Level);
-    icon.alt = row.Level || '';
-    iconWrapper.appendChild(icon);
+  // genre aggregation
+  const genreStats = {}; // key -> { played, games: Set, exp, topRowByBS }
 
-    const own = document.createElement('div');
-    own.className = 'own-rate';
-    own.innerHTML = `<div class="id-code">#${row.ID||''}</div><div>${row['Own Rate']||'-'}</div>`;
+  rows.forEach(row => {
+    const idl = row['IDL'];
+    const gameId = row['ID'];
+    uniqueIdlSet.add(idl);
+    if (gameId != null) uniqueGameIdSet.add(String(gameId));
+    totalExp += safeParseExp(row['Exp']);
 
-    const name = document.createElement('div');
-    name.className = 'game-name';
-    name.textContent = row['Game'] || '(no name)';
+    // extract genres (split by comma/semicolon/pipe)
+    const rawGenres = String(row['Genres'] || '').trim();
+    const split = rawGenres === '' ? [] : rawGenres.split(/[,;|]+/).map(s => s.trim()).filter(Boolean);
 
-    container.appendChild(iconWrapper);
-    container.appendChild(own);
-    container.appendChild(name);
-    return container;
-  }
+    // if no genres, use 'unknown'
+    const genresToUse = split.length ? split : ['#unknown'];
 
-  function createTypeRow(typeKey, agg) {
-    const row = document.createElement('div');
-    row.className = 'type-row';
-    const keyEl = document.createElement('div');
-    keyEl.className = 'type-key';
-    keyEl.textContent = typeKey;
+    genresToUse.forEach(g => {
+      if (!genreStats[g]) genreStats[g] = { played:0, games: new Set(), exp:0, topRowByBS: null, topBS: -Infinity };
+      genreStats[g].played += 1;
+      if (gameId != null) genreStats[g].games.add(String(gameId));
+      genreStats[g].exp += safeParseExp(row['Exp']);
 
-    const statsEl = document.createElement('div');
-    statsEl.className = 'type-stats';
-    statsEl.innerHTML = `<div>Played: ${agg.Played}</div><div>Games: ${agg.Games}</div><div>Exp: ${agg.Exp}</div>`;
-
-    row.appendChild(keyEl);
-    row.appendChild(statsEl);
-
-    row.addEventListener('mouseenter', (ev) => {
-      const best = findHardestClearByType(typeKey);
-      if (best) showTooltip(`${best.Game || '—'} — Level: ${best.Level || '—'}<br/>IDL: ${best.IDL || '-'}`, ev);
+      // compute BS numeric for picking top row (largest BS)
+      const bsNum = parseFloat(String(row['BS'] || '').replace(/[^\d\.\-]/g, ''));
+      if (!isFinite(bsNum)) {
+        // fallback: if Level numeric, use that
+        const lvn = parseFloat(String(row['Level'] || '').replace(/[^\d\.\-]/g, ''));
+        if (isFinite(lvn) && lvn > genreStats[g].topBS) {
+          genreStats[g].topBS = lvn;
+          genreStats[g].topRowByBS = row;
+        }
+      } else if (bsNum > genreStats[g].topBS) {
+        genreStats[g].topBS = bsNum;
+        genreStats[g].topRowByBS = row;
+      }
     });
-    row.addEventListener('mousemove', moveTooltip);
-    row.addEventListener('mouseleave', hideTooltip);
+  });
 
-    return row;
+  // determine topGenre by played
+  const genreList = Object.keys(genreStats);
+  let topGenre = genreList.length ? genreList[0] : '—';
+  genreList.forEach(g => {
+    if (genreStats[g].played > (genreStats[topGenre]?.played || 0)) topGenre = g;
+  });
+
+  // render left sidebar stats
+  document.getElementById('totalRows').textContent = totalRows;
+  document.getElementById('totalUniqueIdl').textContent = uniqueIdlSet.size;
+  document.getElementById('totalExp').textContent = Math.round(totalExp).toLocaleString();
+  document.getElementById('topGenre').textContent = topGenre;
+  document.getElementById('totalUniqueGames').textContent = uniqueGameIdSet.size;
+
+  // render right sidebar table
+  const table = document.getElementById('genreTable');
+  table.innerHTML = ''; // clear
+  if (genreList.length === 0){
+    table.innerHTML = `<div class="placeholder">Không có thể loại nào</div>`;
+    return;
   }
 
-  function createPlanRow(row) {
-    const el = document.createElement('div');
-    el.className = 'data-row';
-    el.onclick = () => window.location.href = `details.html?id=${encodeURIComponent(row.IDL)}`;
-    const info = document.createElement('div');
-    info.style.flex = '1';
-    info.innerHTML = `
-      <div style="display:flex;gap:12px;align-items:center;">
-        <div style="min-width:120px"><strong>In Progress:</strong> ${row['In Progress']||'-'}</div>
-        <div style="min-width:60px"><strong>Level:</strong> ${row.Level||'-'}</div>
-        <div style="min-width:80px"><strong>Ownrate:</strong> ${row['Own Rate']||'-'}</div>
-        <div style="min-width:80px"><strong>IDL:</strong> ${row.IDL||'-'}</div>
-        <div style="min-width:40px"><strong>Pri:</strong> ${row.Pri||'-'}</div>
-      </div>
-      <div style="margin-top:8px"><strong>Progress:</strong> ${row.Progress||'-'} • <strong>Feeling:</strong> ${row.Feeling||'-'} • <em>${row.Comment||''}</em></div>
+  // header row
+  const header = document.createElement('div');
+  header.className = 'row head';
+  header.innerHTML = `<div>Type</div><div>Title</div><div>Played</div><div>Games</div><div>Exp</div>`;
+  table.appendChild(header);
+
+  // sort by played desc
+  genreList.sort((a,b) => genreStats[b].played - genreStats[a].played).forEach(g => {
+    const s = genreStats[g];
+    const rowEl = document.createElement('div');
+    rowEl.className = 'row';
+    const titleHTML = (() => {
+      // choose icon from topRowByBS if exists
+      const topRow = s.topRowByBS;
+      let mainIcon = 'icons/lv_unknown.png';
+      let subIcon = '';
+      let titleText = g;
+      if (topRow) {
+        mainIcon = getIconFile(topRow.Level || topRow.BS);
+        if (['P','R','U'].includes(String(topRow.Level))) {
+          subIcon = getIconFile(topRow.BS);
+        }
+        // title show level letter plus small BS icon (approx)
+        titleText = `${String(topRow.Level || '').trim() || '—'}`;
+      }
+      // build HTML
+      return `<div style="display:flex;align-items:center;gap:8px;">
+                <img src="${mainIcon}" style="width:36px;height:36px;object-fit:contain;border-radius:8px" />
+                <div style="display:flex;flex-direction:column;">
+                  <div style="font-weight:700;color:var(--accent)">${titleText}</div>
+                  <div style="font-size:12px;color:var(--muted);margin-top:2px">${g}</div>
+                </div>
+              </div>`;
+    })();
+
+    rowEl.innerHTML = `
+      <div style="font-weight:700;color:var(--muted);">${g}</div>
+      <div>${titleHTML}</div>
+      <div style="text-align:right">${s.played}</div>
+      <div style="text-align:right">${s.games.size}</div>
+      <div style="text-align:right">${Math.round(s.exp).toLocaleString()}</div>
     `;
-    el.appendChild(info);
-    return el;
+    table.appendChild(rowEl);
+  });
+}
+
+/* --- Search & filtering --- */
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  const query = e.target.value.trim();
+  if (!window.allData) return;
+  if (query === '') {
+    displayData(window.allData);
+    return;
   }
 
-  // aggregate & find
-  function aggregateByType(rows) {
-    const map = {};
-    (rows||[]).forEach(r => {
-      const t = (r.Type || '').trim() || '#unknown';
-      if (!map[t]) map[t] = { Played: 0, Games: 0, Exp: 0, sample: r };
-      map[t].Played += Number(r.Played || 0);
-      map[t].Games += Number(r.Games || 0);
-      map[t].Exp += Number(r.Exp || 0);
-    });
-    return map;
+  // If there is no '=' search by Game name substring
+  if (!query.includes('=')) {
+    const filtered = window.allData.filter(row => (row['Game'] || '').toLowerCase().includes(query.toLowerCase()));
+    displayData(filtered);
+    return;
   }
 
-  function findHardestClearByType(typeKey) {
-    if (!window.statsData) return null;
-    const rows = window.statsData.filter(r => ((r.Type||'').trim() === typeKey));
-    if (!rows.length) return null;
-    rows.sort((a,b) => (parseNum(b.BS) || parseNum(b.Level)) - (parseNum(a.BS) || parseNum(a.Level)));
-    return rows[0];
-  }
+  // support multi filters: remove parentheses then split by commas
+  const cleanParts = query.replace(/[()]/g,'').split(',').map(s => s.trim()).filter(Boolean);
+  let filtered = window.allData.slice();
 
-  // render per-tab
-  function renderMyClears(filterText='') {
-    const container = document.getElementById('dataContainer');
-    if (!container) return;
-    container.innerHTML = '';
-    let data = (window.levelData||[]);
-    if (filterText) {
-      if (!filterText.includes('=')) {
-        data = data.filter(r => (r.Game||'').toLowerCase().includes(filterText.toLowerCase()));
-      } else {
-        const parts = filterText.replace(/[()]/g,'').split(',').map(s=>s.trim());
-        parts.forEach(p => {
-          const [k,v] = p.split('=').map(x => x.trim().toLowerCase());
-          if (k==='game') data = data.filter(r => (r.Game||'').toLowerCase().includes(v));
-          if (k==='level') data = data.filter(r => String(Math.floor(parseNum(r.BS)||0)) === v);
-          if (k==='id') data = data.filter(r => (r.ID||'').toString() === v);
-        });
-      }
-    }
-    data.forEach(r => container.appendChild(createRowForLevel(r)));
-  }
-
-  function renderTypeStats(filterType='') {
-    const container = document.getElementById('typeContainer');
-    if (!container) return;
-    container.innerHTML = '';
-    const map = aggregateByType(window.statsData || []);
-    Object.keys(map).sort().forEach(k => {
-      if (filterType && !k.toLowerCase().includes(filterType.toLowerCase())) return;
-      container.appendChild(createTypeRow(k, map[k]));
-    });
-  }
-
-  function renderClearPlan(filterText='') {
-    const container = document.getElementById('planContainer');
-    if (!container) return;
-    container.innerHTML = '';
-    let rows = (window.statsData||[]).filter(r => (r['In Progress'] && r['In Progress'].trim() !== ''));
-    if (filterText) {
-      const parts = filterText.replace(/[()]/g,'').split(',').map(s=>s.trim());
-      parts.forEach(p => {
-        const [k,v] = p.split('=').map(x => x.trim().toLowerCase());
-        if (k==='pri') rows = rows.filter(r => (r.Pri||'').toString() === v);
-        if (k==='feeling') rows = rows.filter(r => (r.Feeling||'').toLowerCase().includes(v));
-        if (k==='idl') rows = rows.filter(r => (r.IDL||'').toString() === v);
+  cleanParts.forEach(part => {
+    const [k,v] = part.split('=').map(s => s.trim().toLowerCase());
+    if (!k) return;
+    if (k === 'game') {
+      filtered = filtered.filter(row => (row['Game']||'').toLowerCase().includes(v));
+    } else if (k === 'genre' || k === 'type') {
+      filtered = filtered.filter(row => {
+        const raw = String(row['Genres'] || '').toLowerCase();
+        // check if any tag equals or includes the filter value
+        return raw.split(/[,;|]+/).map(s => s.trim()).some(tag => tag.includes(v));
       });
-    }
-    rows.forEach(r => container.appendChild(createPlanRow(r)));
-  }
-
-  // load both sheets once
-  async function loadAll() {
-    try {
-      const [levelsRes, statsRes] = await Promise.all([ fetch(levelUrl), fetch(statsUrl) ]);
-      if (!levelsRes.ok) throw new Error(`Level fetch failed: ${levelsRes.status}`);
-      if (!statsRes.ok) throw new Error(`Stats fetch failed: ${statsRes.status}`);
-      const [lv, st] = await Promise.all([levelsRes.json(), statsRes.json()]);
-      window.levelData = lv;
-      window.statsData = st;
-
-      // fill left sidebar quick info
-      const perfList = document.getElementById('perfList');
-      const statList = document.getElementById('statList');
-      if (perfList) {
-        perfList.innerHTML = `<div class="stat-item">Levels total: ${window.levelData.length}</div>
-                              <div class="stat-item">Stats rows: ${window.statsData.length}</div>`;
-      }
-      if (statList) {
-        statList.innerHTML = `<div class="stat-item">Sample: ${window.levelData[0] ? window.levelData[0].Game : '-'}</div>`;
-      }
-
-      // initial render
-      renderMyClears();
-      renderTypeStats();
-      renderClearPlan();
-    } catch (err) {
-      console.error('Load failed', err);
-      const c = document.getElementById('dataContainer');
-      if (c) c.innerHTML = `<div style="color:tomato">Failed to load data: ${err.message}</div>`;
-    }
-  }
-
-  // wire UI events
-  function wireUI() {
-    const sc = document.getElementById('searchClears');
-    const st = document.getElementById('searchTypes');
-    const sp = document.getElementById('searchPlan');
-    if (sc) sc.addEventListener('input', e => renderMyClears(e.target.value.trim()));
-    if (st) st.addEventListener('input', e => renderTypeStats(e.target.value.trim()));
-    if (sp) sp.addEventListener('input', e => renderClearPlan(e.target.value.trim()));
-
-    document.querySelectorAll('.tab-btn').forEach(btn=>{
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        const tab = btn.dataset.tab;
-        document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-        const el = document.getElementById(`tab-${tab}`);
-        if (el) el.classList.add('active');
+    } else if (k === 'level') {
+      filtered = filtered.filter(row => {
+        const bsVal = parseFloat(String(row['BS'] || row['Level'] || '').replace(/[^\d\.\-]/g,''));
+        return !isNaN(bsVal) && Math.floor(bsVal) === parseInt(v,10);
       });
-    });
-  }
+    } else if (k === 'id') {
+      filtered = filtered.filter(row => String(row['ID'] || '').toLowerCase() === v);
+    } else if (k === 'idl') {
+      filtered = filtered.filter(row => String(row['IDL'] || '').toLowerCase() === v);
+    }
+  });
 
-  wireUI();
-  loadAll();
-})();
+  displayData(filtered);
+});
+
+/* hint toggle */
+document.getElementById('hintToggle').addEventListener('click', () => {
+  document.getElementById('searchHint').classList.toggle('hidden');
+});
+
+/* initial load */
+loadData();
