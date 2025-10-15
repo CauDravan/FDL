@@ -134,8 +134,8 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 .genre-table .grid-head,
 .genre-table .grid-row{
   display:grid;
-  grid-template-columns: 1fr 120px 80px 80px; /* type | icon | played | games | exp (we will put icon in 2nd column) */
-  gap:14px;
+  grid-template-columns: 1fr 120px 80px 80px; /* type | played | games | exp (we will put icon in 2nd column) */
+  gap:16px;
   align-items:center;
   padding:10px;
   border-radius:10px;
@@ -160,3 +160,5 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
   .search-wrap input{ width:100%; }
   .row .game-right{ max-width:60%; }
 }
+
+.icon-cell { display: none !important; }
