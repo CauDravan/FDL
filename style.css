@@ -16,7 +16,7 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 /* layout: left narrow, middle slimmer, right fat */
 .app{
   display:grid;
-  grid-template-columns: 240px 0.7fr 600px; /* middle thinner, right wider */
+  grid-template-columns: 240px 0.75fr 560px; /* middle thinner, right wider */
   gap:22px;
   padding:28px;
   align-items:start;
@@ -74,10 +74,10 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 .hidden{ display:none }
 
 /* LIST (middle) - each row is a horizontal line */
-.list{ display:flex; flex-direction:column; gap:12px }
+.list{ display:flex; flex-direction:column; gap:10px }
 .row{
   position:relative;
-  padding:14px 16px 14px 74px; /* room for top-left icon */
+  padding:10px 14px 10px 64px; /* room for top-left icon */
   border-radius:12px;
   background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));
   border:1px solid rgba(255,255,255,0.02);
@@ -91,8 +91,8 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
   position:absolute;
   left:12px;
   top:10px;
-  width:44px;
-  height:44px;
+  width:40px;
+  height:40px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -100,12 +100,21 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
   /* remove white background — make it transparent and just show image */
   background:transparent;
 }
-.row .icon img{ width:40px; height:40px; object-fit:contain; display:block; border-radius:8px; background:transparent; box-shadow:none; border:0 }
+.row .icon img{ width:36px; height:36px; object-fit:contain; display:block; border-radius:6px; background:transparent; box-shadow:none; border:0 }
 
 /* row content: two lines */
 .row .line1{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:6px; }
 .row .id-left{ color:var(--accent1); font-weight:700; font-size:13px; }
-.row .game-right{ color:var(--text); font-weight:700; font-size:14px; text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:70% }
+.row .game-right{
+  color:var(--text);
+  font-weight:700;
+  font-size:13px;
+  text-align:right;
+  white-space:nowrap;          /* KEEP ON ONE LINE */
+  overflow:hidden;
+  text-overflow:ellipsis;     /* show ellipsis when too long */
+  max-width:72%;              /* keep it from overflowing into right sidebar */
+}
 
 /* second line: own rate or subtitle */
 .row .line2{ color:var(--muted); font-size:12px }
@@ -135,4 +144,5 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
   .app{ grid-template-columns: 220px 1fr; }
   .sidebar.right{ display:none }
   .search-wrap input{ width:100%; }
+  .row .game-right{ max-width:60%; }
 }
