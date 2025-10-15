@@ -16,7 +16,7 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 /* layout: left narrow, middle slimmer, right fat */
 .app{
   display:grid;
-  grid-template-columns: 240px 0.75fr 560px; /* middle thinner, right wider */
+  grid-template-columns: 240px 0.55fr 880px; /* middle thinner, right wider */
   gap:22px;
   padding:28px;
   align-items:start;
@@ -66,7 +66,7 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 .brand h1{ margin:0; color:var(--accent1); font-size:18px }
 
 .search-wrap{ display:flex; align-items:center; gap:8px }
-.search-wrap input{ width:560px; max-width:100%; padding:9px 12px; border-radius:10px; background:var(--glass); border:1px solid rgba(255,255,255,0.02); color:var(--text) }
+.search-wrap input{ width:420px; max-width:100%; padding:9px 12px; border-radius:10px; background:var(--glass); border:1px solid rgba(255,255,255,0.02); color:var(--text) }
 .search-wrap button{ width:36px; height:36px; border-radius:8px; background:transparent; border:1px solid rgba(255,255,255,0.03); color:var(--muted) }
 
 /* hint */
