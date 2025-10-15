@@ -1,52 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>FDL Level Details</title>
   <link rel="icon" type="image/png" href="sob_cat.png" />
   <link rel="stylesheet" href="style.css" />
   <style>
-  .container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 20px;
-    background: #121212;
-    border-radius: 16px;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
-    font-family: "Segoe UI", sans-serif;
-    color: #f5f5f5;
-  }
-
-  h1 {
-    text-align: center;
-    margin-bottom: 30px;
-    color: #ffffff;
-  }
-
-  .detail-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px solid #333;
-  }
-
-  .detail-row span {
-    font-weight: bold;
-    color: #bbbbbb;
-  }
-
-  .back-link {
-    display: block;
-    margin-top: 20px;
-    text-align: center;
-    text-decoration: none;
-    color: #888;
-  }
-
-  .back-link:hover {
-    color: #fff;
-  }
+    .container { max-width: 900px; margin: 40px auto; padding: 20px; background: #121212; border-radius: 12px; color:#fff; }
+    .detail-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #333}
+    .detail-row span{font-weight:bold;color:#bbb}
+    .back-link{display:block;margin-top:20px;text-align:center;color:#888;text-decoration:none}
+    .back-link:hover{color:#fff}
   </style>
 </head>
 <body>
@@ -62,7 +27,7 @@
     const url = `https://opensheet.elk.sh/${sheetId}/${sheetName}`;
 
     const queryParams = new URLSearchParams(window.location.search);
-    const id = queryParams.get('id'); // giữ nguyên string để so sánh
+    const id = queryParams.get('id');
 
     const fields = [
       'IDL', 'Date', 'ID', 'FDG', 'Game', 'Developer', 'Level', 'Own Rate', 'Rate',
@@ -87,7 +52,7 @@
               ${
                 field === 'Video' && entry[field]
                   ? `<a href="${entry[field]}" target="_blank">${entry[field]}</a>`
-                  : entry[field] || '-'
+                  : (entry[field] || '-')
               }
             </div>
           </div>
