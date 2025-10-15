@@ -133,7 +133,7 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 .genre-table .grid-row{
   display:grid;
   /* Type | Played | Games | Exp */
-  grid-template-columns: 1.5fr 0.7fr 0.7fr 0.9fr;
+  grid-template-columns: 240px minmax(260px, 0.36fr) minmax(360px, 1fr);;
   gap:10px;
   align-items:center;
   padding:8px 10px;
@@ -166,7 +166,7 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 }
 
 /* small responsive */
-@media (max-width:1280px){
+@media (max-width:80em){
   .app{ grid-template-columns: 220px 1fr; }
   .sidebar.right{ display:none }
   .row .game-right{ max-width:60%; }
