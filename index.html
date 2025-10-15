@@ -1,64 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CD Clears — Dashboard</title>
   <link rel="icon" type="image/png" href="sob_cat.png" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
   <div class="app">
-    <aside class="sidebar-left">
-      <div class="profile">
-        <img src="my_profile.png" alt="profile" class="profile-img"/>
-        <div class="profile-intro" contenteditable="true">My introduction is here</div>
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar left">
+      <div class="profile-card">
+        <img src="my_profile.png" alt="profile" class="profile-img" />
+        <h2 class="profile-name">Hiền</h2>
+        <p class="profile-bio">Puzzle lover • CD Clears collector • UI & data fan 💗</p>
       </div>
 
-      <section class="profile-stats">
-        <h3>Performance</h3>
-        <div id="perfList">
-          <!-- filled by JS -->
+      <div class="stats-card">
+        <h3>Chỉ số tổng quan</h3>
+        <div class="stat">
+          <span class="label">Tổng rows (clears):</span>
+          <span id="totalRows" class="value">—</span>
         </div>
-      </section>
-
-      <section class="more-stats">
-        <h3>Stats</h3>
-        <div id="statList"></div>
-      </section>
+        <div class="stat">
+          <span class="label">Tổng unique IDL:</span>
+          <span id="totalUniqueIdl" class="value">—</span>
+        </div>
+        <div class="stat">
+          <span class="label">Tổng Exp:</span>
+          <span id="totalExp" class="value">—</span>
+        </div>
+        <div class="stat">
+          <span class="label">Thể loại clear nhiều nhất:</span>
+          <span id="topGenre" class="value">—</span>
+        </div>
+        <div class="stat">
+          <span class="label">Tổng unique game (ID):</span>
+          <span id="totalUniqueGames" class="value">—</span>
+        </div>
+      </div>
     </aside>
 
-    <main class="main-area">
-      <div class="tabs">
-        <button class="tab-btn active" data-tab="clears">My Clears</button>
-        <button class="tab-btn" data-tab="types">Type Stats</button>
-        <button class="tab-btn" data-tab="plan">Clear Plan</button>
+    <!-- MIDDLE (LIST & SEARCH) -->
+    <main class="main-col">
+      <header class="topbar">
+        <h1 class="title">
+          <img src="sheet_icon.png" alt="sheet" class="title-icon" />
+          CD Clears
+        </h1>
+
+        <div class="search-wrapper">
+          <input id="searchInput" placeholder="Search game name or use filters: game=sudoku, level=45, genre=#puzzle..." />
+          <button id="hintToggle" title="Search help">?</button>
+        </div>
+      </header>
+
+      <div id="searchHint" class="search-hint hidden">
+        💡 Try filters like:<br/>
+        <code>level=45</code>, <code>game=sudoku</code>, <code>genre=#puzzle-video-game</code>, <code>id=123</code><br/>
+        Combine with commas: <code>(game=nonogram, level=46)</code>
       </div>
 
-      <section id="tab-clears" class="tab-panel active">
-        <div class="search-row">
-          <input id="searchClears" placeholder="Search game name or use filters: game=..., level=..., id=..." />
-        </div>
-        <div id="dataContainer" class="grid-container"></div>
-      </section>
-
-      <section id="tab-types" class="tab-panel">
-        <div class="search-row">
-          <input id="searchTypes" placeholder="Search Type (ex: #pure-puzzle)" />
-        </div>
-        <div id="typeContainer" class="grid-container"></div>
-      </section>
-
-      <section id="tab-plan" class="tab-panel">
-        <div class="search-row">
-          <input id="searchPlan" placeholder="Filter plan (ex: pri=2, feeling=45.9, idl=1625)" />
-        </div>
-        <div id="planContainer" class="grid-container"></div>
+      <section id="dataContainer" class="list-grid">
+        <!-- rows injected here -->
       </section>
     </main>
-  </div>
 
-  <div id="tooltip" class="tooltip hidden"></div>
+    <!-- RIGHT SIDEBAR -->
+    <aside class="sidebar right">
+      <div class="genre-card">
+        <h3>Thống kê theo thể loại</h3>
+        <div id="genreTable" class="genre-table">
+          <!-- table injected here -->
+          <div class="placeholder">Đang tải dữ liệu...</div>
+        </div>
+      </div>
+    </aside>
+  </div>
 
   <script src="script.js"></script>
 </body>
