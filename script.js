@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // header row (Type | Icon | Played | Games | Exp)
     const head = document.createElement('div');
     head.className = 'grid-head';
-    head.innerHTML = `<div>Type</div><div>Icon</div><div>Played</div><div>Games</div><div>Exp</div>`;
+    head.innerHTML = `<div>Type</div><div>Played</div><div>Games</div><div>Exp</div>`;
     table.appendChild(head);
 
     // sort by played
