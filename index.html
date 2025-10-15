@@ -1,38 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CD Clears</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CD Clears — Dashboard</title>
   <link rel="icon" type="image/png" href="sob_cat.png" />
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>
-      <a href="https://docs.google.com/spreadsheets/d/1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o/edit?gid=0#gid=0" 
-         target="_blank" 
-         class="sheet-link">
-        <img src="sheet_icon.png" alt="Google Sheets" class="sheet-icon"/>
-        CD Clears
-      </a>
-    </h1>
+  <div class="app">
+    <aside class="sidebar-left">
+      <div class="profile">
+        <img src="profile_small.png" alt="profile" class="profile-img"/>
+        <div class="profile-intro" contenteditable="true">My introduction is here</div>
+      </div>
 
-    <div class="search-bar-wrapper">
-    <input type="text" id="searchInput" placeholder="Search game name..." />
-    <button id="hintToggle" title="Search help">?</button>
-  </div>
-  <div id="searchHint" class="search-hint hidden">
-    💡 Try filters like:<br />
-    <code>level=45</code>, <code>game=sudoku</code>, <code>genre=#puzzle-video-game</code>, <code>id=123</code><br />
-    Combine filters using commas:<br />
-    <code>(game=nonogram, level=46)</code><br />
-    <span style="color:#00FF66;">You may want to wait and refresh few time just to make sure API update the data</span>
+      <section class="profile-stats">
+        <h3>Performance</h3>
+        <div id="perfList">
+          <!-- will be filled by JS -->
+        </div>
+      </section>
+
+      <section class="more-stats">
+        <h3>Stats</h3>
+        <div id="statList"></div>
+      </section>
+    </aside>
+
+    <main class="main-area">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="clears">My Clears</button>
+        <button class="tab-btn" data-tab="types">Type Stats</button>
+        <button class="tab-btn" data-tab="plan">Clear Plan</button>
+      </div>
+
+      <section id="tab-clears" class="tab-panel active">
+        <div class="search-row">
+          <input id="searchClears" placeholder="Search game name or (game=..., level=..., id=...)" />
+        </div>
+        <div id="dataContainer" class="grid-container"></div>
+      </section>
+
+      <section id="tab-types" class="tab-panel">
+        <div class="search-row">
+          <input id="searchTypes" placeholder="Search Type (ex: #pure-puzzle)"/>
+        </div>
+        <div id="typeContainer" class="grid-container"></div>
+      </section>
+
+      <section id="tab-plan" class="tab-panel">
+        <div class="search-row">
+          <input id="searchPlan" placeholder="Filter plan (ex: feeling=?, pri=2)"/>
+        </div>
+        <div id="planContainer" class="grid-container"></div>
+      </section>
+    </main>
   </div>
 
-
-    <div id="dataContainer" class="grid-container"></div>
-  </div>
+  <!-- tooltip -->
+  <div id="tooltip" class="tooltip hidden"></div>
 
   <script src="script.js"></script>
 </body>
