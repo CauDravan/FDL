@@ -1,9 +1,9 @@
-/* style.css — full rewrite
+/* style.css — fixed & tuned
    Theme: neon black → purple → pink
-   Goals:
-   - Sidebar-left & main-col always hiển thị (sticky + scroll region)
-   - Gọn, compact rows, rõ ràng, responsive
-   - Retain Orbitron font usage (declared in HTML)
+   Notes:
+   - Fixed missing semicolon and grid sizing that caused empty space after "Exp"
+   - main-col + sidebar.right fonts slightly smaller
+   - Sidebar-left sticky + internal scroll preserved
 */
 
 /* ========== Root vars ========== */
@@ -116,6 +116,8 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
   border: 1px solid rgba(255,255,255,0.02);
   box-shadow: 0 8px 30px rgba(0,0,0,0.45);
   z-index: 4;
+  /* slightly smaller font as requested */
+  font-size: 11px;
 }
 
 /* topbar (search) remains visible */
@@ -125,7 +127,7 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 .search-wrap{ display:flex; align-items:center; gap:8px; width:100% }
 .search-wrap input{
   width:100%;
-  padding:9px 12px; border-radius:10px; background:var(--glass); border:1px solid rgba(255,255,255,0.03); color:var(--text); font-size:14px;
+  padding:9px 12px; border-radius:10px; background:var(--glass); border:1px solid rgba(255,255,255,0.03); color:var(--text); font-size:13px;
   outline:none;
   transition: box-shadow .12s ease, transform .08s ease;
 }
@@ -200,6 +202,8 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
   border: 1px solid rgba(192,79,255,0.18);
   box-shadow: 0 8px 30px rgba(0,0,0,0.6), 0 0 0 4px var(--ring);
   transition: box-shadow .18s ease, transform .12s ease;
+  /* slightly smaller font as requested */
+  font-size: 11px;
 }
 
 /* neon pseudo outer glow */
@@ -216,14 +220,16 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
   z-index: -1;
 }
 
-.panel.genres h3{ color:var(--accent2); margin:0 0 12px; font-size:15px }
+.panel.genres h3{ color:var(--accent2); margin:0 0 12px; font-size:14px }
 .genre-table { max-height: 72vh; overflow-y: auto; overflow-x: hidden; padding-right: 6px; padding-bottom:6px; position:relative; }
 
-/* grid for genre rows */
+/* grid for genre rows
+   IMPORTANT: use 1fr + minmax for numeric cols so the table fills container
+*/
 .genre-table .grid-head,
 .genre-table .grid-row{
   display:grid;
-  grid-template-columns: 0.7fr 60px 60px 70px
+  grid-template-columns: 1fr repeat(3, minmax(40px, max-content));
   gap:10px;
   align-items:center;
   padding:8px 12px;
@@ -250,7 +256,7 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 /* ========== small responsive tweaks ========== */
 @media (max-width:1200px){
   .app{ grid-template-columns: 220px 1fr 360px; gap:12px; }
-  .genre-table .grid-head, .genre-table .grid-row { grid-template-columns: 0.7fr 50px 50px 60px; }
+  .genre-table .grid-head, .genre-table .grid-row { grid-template-columns: 1fr repeat(3, minmax(36px, max-content)); }
   .row { padding-left: 60px; }
   .search-wrap input{ font-size:13px }
 }
@@ -265,7 +271,7 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
   html,body{ font-size:13px }
   /* disable sticky on small screens to avoid overlap */
   .sidebar.left { position: relative; max-height: none; overflow: visible; }
-  .main-col { position: relative; max-height: none; overflow: visible; }
+  .main-col { position: relative; max-height: none; overflow: visible; font-size: 12px; }
   .main-col #dataContainer { overflow: visible; flex: none; min-height: auto; }
   .app{ grid-template-columns: 1fr; padding:12px; gap:12px; }
   .sidebar.left, .main-col{ border-radius:12px; padding:10px; }
