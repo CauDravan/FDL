@@ -207,3 +207,53 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 @media (max-width:900px){
   html,body{ font-size:12px }
 }
+
+/* ======> TEMP HIGHLIGHT: hộp viền so sánh cột (dùng thử / dễ tắt) ====== */
+
+/* Neon frame cho right sidebar — rõ ràng, dễ thấy */
+.sidebar.right{
+  position:relative; /* cần cho pseudo */
+  border: 1px solid rgba(192,79,255,0.18); /* giữ viền gốc hơi tím */
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6), 
+              0 0 0 4px rgba(192,79,255,0.06), /* nhẹ ring */
+              0 0 22px rgba(255,79,200,0.04);  /* subtle glow */
+  transition: box-shadow .18s ease, transform .12s ease;
+}
+
+/* thêm pseudo để có khung neon ngoài rìa (chủ yếu để nhìn rõ) */
+.sidebar.right::after{
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: -8px;
+  border-radius: 18px;
+  background: linear-gradient(90deg, rgba(192,79,255,0.22), rgba(255,79,200,0.14));
+  filter: blur(8px);
+  opacity: 0.8;
+  mix-blend-mode: screen;
+  z-index: -1;
+}
+
+/* subtle dashed outlines cho left + middle để dễ so sánh */
+.sidebar.left, .main-col{
+  outline: 2px dashed rgba(255,255,255,0.03);
+  transition: outline-color .12s ease, transform .12s ease;
+}
+
+/* khi hover vào các phần đó sẽ làm nổi lên — tiện cho thử */
+.sidebar.left:hover, .main-col:hover, .sidebar.right:hover{
+  transform: translateY(-3px);
+}
+
+/* optional: hiển thị label nhỏ trên viền phải (chỉ khi muốn) */
+.sidebar.right .panel.genres h3{
+  position: relative;
+  z-index: 2;
+  padding-left: 6px;
+}
+
+/* Ẩn highlight khi màn hình quá nhỏ */
+@media (max-width:900px){
+  .sidebar.right::after{ display:none; }
+  .sidebar.left, .main-col{ outline: none; }
+}
