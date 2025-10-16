@@ -210,7 +210,6 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 /* small responsive */
 @media (max-width:80em){
   .app{ grid-template-columns: 220px 1fr; }
-  .sidebar.right{ display:none }
   .row .game-right{ max-width:60%; }
 }
 
@@ -264,6 +263,5 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 
 /* Ẩn highlight khi màn hình quá nhỏ */
 @media (max-width:900px){
-  .sidebar.right::after{ display:none; }
   .sidebar.left, .main-col{ outline: none; }
 }
