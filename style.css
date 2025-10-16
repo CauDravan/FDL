@@ -130,7 +130,7 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 .genre-table .grid-row{
   display:grid;
   /* Type | Played | Games | Exp */
-  grid-template-columns: 240px minmax(260px, 0.36fr) minmax(360px, 1fr);;
+  grid-template-columns: 180px 70px 70px 90px
   gap:10px;
   align-items:center;
   padding:8px 10px;
