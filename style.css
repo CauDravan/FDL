@@ -19,7 +19,7 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 .app{
   display:grid;
   /* Left | Middle | Right: giảm right width để không quá chiếm chỗ ở zoom 100% */
-  grid-template-columns: 220px 1fr 480px;
+  grid-template-columns: 220px 1fr 400px;
   gap:16px;
   padding:18px;
   align-items:start;
@@ -122,16 +122,23 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 .row .line2{ color:var(--muted); font-size:12px }
 
 /* RIGHT: genre table - remove icon column and tighten spacing */
+.panel.genres {
+  position: relative;
+  overflow: hidden;
+}
+
 .panel.genres h3{
   color:var(--accent2);
   margin:0 0 12px;
   font-size:15px;
 }
-.genre-table{
-  max-height:72vh;
-  overflow:auto;
-  padding-right:8px;
-  padding-bottom:6px;
+.genre-table {
+  max-height: 72vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px;
+  padding-bottom: 6px;
+  position: relative;
 }
 
 /* grid rows: Type | Played | Games | Exp
@@ -139,7 +146,7 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 .genre-table .grid-head,
 .genre-table .grid-row{
   display:grid;
-  grid-template-columns: 1fr 90px 84px 110px;
+  grid-template-columns: 1fr 80px 70px 100px;
   gap:10px;
   align-items:center;
   padding:8px 12px;
@@ -149,14 +156,17 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
   border:1px solid rgba(255,255,255,0.02);
 }
 /* sticky header so when scrolling the headings remain visible */
-.genre-table .grid-head{
-  font-weight:700;
-  color:var(--muted);
-  font-size:13px;
-  position:sticky;
-  top:6px;
-  z-index:2;
-  backdrop-filter: blur(4px);
+.genre-table .grid-head {
+  font-weight: 700;
+  color: var(--muted);
+  font-size: 13px;
+  position: sticky;
+  top: 0;
+  z-index: 3; /* cao hơn hàng dữ liệu */
+  background: rgba(10, 7, 16, 0.95);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 0 12px rgba(192,79,255,0.06);
 }
 
 /* Type column styling */
