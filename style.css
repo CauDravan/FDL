@@ -19,7 +19,7 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 .app{
   display:grid;
   /* Left | Middle | Right: giảm right width để không quá chiếm chỗ ở zoom 100% */
-  grid-template-columns: 220px 0.6fr 500px;
+  grid-template-columns: 220px 380px 500px;
   gap:16px;
   padding:18px;
   align-items:start;
