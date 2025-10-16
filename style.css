@@ -223,7 +223,7 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 .genre-table .grid-head,
 .genre-table .grid-row{
   display:grid;
-  grid-template-columns: 1fr repeat(3, minmax(40px, max-content));
+  grid-template-columns: 0.7fr 60px 60px 70px
   gap:10px;
   align-items:center;
   padding:8px 12px;
