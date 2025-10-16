@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
     table.appendChild(head);
 
     // sort by played
-    genres.sort((a,b) => genreStats[b].played - genreStats[a].played);
+    genres.sort((a,b) => genreStats[b].exp - genreStats[a].exp);
     genres.forEach(g => {
       const s = genreStats[g];
       const r = document.createElement('div');
