@@ -257,7 +257,6 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 
 @media (max-width:80em){
   .app{ grid-template-columns: 220px 1fr; }
-  .sidebar.right{ display:none }
   .main-col { max-height: calc(100vh - 36px); }
   .row .game-right{ max-width:60%; }
 }
