@@ -38,7 +38,7 @@ body {
 /* Desktop: 3 columns */
 @media (min-width: 1024px) {
   .app {
-    grid-template-columns: 320px 0.85fr 420px;
+    grid-template-columns: 320px 0.9fr 440px;
   }
 }
 
