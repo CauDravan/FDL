@@ -64,9 +64,6 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 
 /* topbar */
 .topbar{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px }
-.brand{ display:flex; align-items:center; gap:10px }
-.sheet-icon{ width:26px; height:26px; object-fit:contain }
-.brand h1{ margin:0; color:var(--accent1); font-size:16px }
 
 .search-wrap{ display:flex; align-items:center; gap:8px }
 /* search smaller to match slimmer middle column */
