@@ -22,52 +22,70 @@ document.addEventListener('DOMContentLoaded', () => {
     return isNaN(parsed) ? 0 : parsed;
   }
 
-  function createRow(data){
-    const row = document.createElement('div');
-    row.className = 'row';
-    row.onclick = () => {
-      const idl = data['IDL'] || '';
-      window.location.href = `details.html?id=${encodeURIComponent(idl)}`;
-    };
+function createRow(data){
+  const row = document.createElement('div');
+  row.className = 'row';
+  row.onclick = () => {
+    const idl = data['IDL'] || '';
+    window.location.href = `details.html?id=${encodeURIComponent(idl)}`;
+  };
 
-    // icon top-left (small)
-    const iconWrap = document.createElement('div');
-    iconWrap.className = 'icon';
-    const img = document.createElement('img');
-    img.src = getIconFile(data.Level || data.BS);
-    img.alt = data.Level || '';
-    // ensure transparent/background removed — rely on icon PNG itself
-    iconWrap.appendChild(img);
-    row.appendChild(iconWrap);
+  // icon top-left
+  const iconWrap = document.createElement('div');
+  iconWrap.className = 'icon';
+  
+  const mainLevel = data.Level || data.BS;
+  const img = document.createElement('img');
+  img.src = getIconFile(mainLevel);
+  img.alt = mainLevel || '';
+  iconWrap.appendChild(img);
 
-    // First line: left = "#ID -", right = "Game"
-    const line1 = document.createElement('div');
-    line1.className = 'line1';
-    const idLeft = document.createElement('div');
-    idLeft.className = 'id-left';
-    idLeft.textContent = `#${data.ID || (data['IDL'] || '-')}`;
-    // right game name
-    const gameRight = document.createElement('div');
-    gameRight.className = 'game-right';
-    gameRight.textContent = data['Game'] || (data['IDL'] || '(unknown)');
-
-    // if you want combined "#512 - Futoshiki" visually, show hyphen on left and game on right
-    // show hyphen right after ID (we can include it as part of idLeft)
-    idLeft.textContent = `${idLeft.textContent} -`;
-
-    line1.appendChild(idLeft);
-    line1.appendChild(gameRight);
-
-    // second line: own rate (or Level short)
-    const line2 = document.createElement('div');
-    line2.className = 'line2';
-    line2.textContent = data['Own Rate'] || data['Level'] || '-';
-
-    row.appendChild(line1);
-    row.appendChild(line2);
-    return row;
+  // Check if we need a level badge for P, U, R
+  const trimmedLevel = String(mainLevel).trim();
+  if (trimmedLevel === 'P' || trimmedLevel === 'U' || trimmedLevel === 'R') {
+    const bs = data.BS || data.Level;
+    if (bs != null) {
+      const numBS = parseFloat(String(bs).replace(/[^\d\.\-]/g, ''));
+      if (!isNaN(numBS)) {
+        const levelNum = Math.floor(numBS);
+        
+        // Create small badge
+        const badge = document.createElement('div');
+        badge.className = 'level-badge';
+        const badgeImg = document.createElement('img');
+        badgeImg.src = `icons/lv${levelNum}.png`;
+        badgeImg.alt = levelNum;
+        badge.appendChild(badgeImg);
+        iconWrap.appendChild(badge);
+      }
+    }
   }
 
+  row.appendChild(iconWrap);
+
+  // First line: left = "#ID -", right = "Game"
+  const line1 = document.createElement('div');
+  line1.className = 'line1';
+  const idLeft = document.createElement('div');
+  idLeft.className = 'id-left';
+  idLeft.textContent = `#${data.ID || (data['IDL'] || '-')} -`;
+  
+  const gameRight = document.createElement('div');
+  gameRight.className = 'game-right';
+  gameRight.textContent = data['Game'] || (data['IDL'] || '(unknown)');
+
+  line1.appendChild(idLeft);
+  line1.appendChild(gameRight);
+
+  // second line: own rate (or Level short)
+  const line2 = document.createElement('div');
+  line2.className = 'line2';
+  line2.textContent = data['Own Rate'] || data['Level'] || '-';
+
+  row.appendChild(line1);
+  row.appendChild(line2);
+  return row;
+}
   // data area
   window.allData = [];
 
