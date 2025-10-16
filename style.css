@@ -19,9 +19,9 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 .app{
   display:grid;
   /* Left | Middle | Right */
-  grid-template-columns: 240px 0.40fr 940px; /* make middle slim and right wider */
-  gap:18px;
-  padding:22px;
+  grid-template-columns: 220px 0.40fr 700px; /* make middle slim and right narrower to fit 100% */
+  gap:16px;
+  padding:18px;
   align-items:start;
   min-height:100vh;
 }
