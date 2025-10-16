@@ -32,7 +32,7 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 /* Left (profile) | Middle (main-col) | Right (genres) */
 .app{
   display:grid;
-  grid-template-columns: 240px 1fr 420px;
+  grid-template-columns: 220px minmax(360px, 1fr) 420px;
   gap:16px;
   padding:18px;
   align-items:start;
@@ -217,13 +217,13 @@ html,body{height:100%;margin:0;font-family:"Orbitron",system-ui,-apple-system,Ar
 }
 
 .panel.genres h3{ color:var(--accent2); margin:0 0 12px; font-size:15px }
-.genre-table { max-height: 72vh; overflow-y: auto; overflow-x: hidden; padding-right: 8px; padding-bottom:6px; position:relative; }
+.genre-table { width: 100%; box-sizing: border-box; max-height: 72vh; overflow-y: auto; overflow-x: hidden; padding-right: 6px; padding-bottom:6px; position:relative; }
 
 /* grid for genre rows */
 .genre-table .grid-head,
 .genre-table .grid-row{
   display:grid;
-  grid-template-columns: 0.7fr 60px 60px 70px;
+  grid-template-columns: 1fr repeat(3, minmax(40px, max-content));
   gap:10px;
   align-items:center;
   padding:8px 12px;
