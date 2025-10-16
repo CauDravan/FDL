@@ -350,24 +350,26 @@ body {
 
 .row .line1 {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  justify-content: flex-start;
+  align-items: center;
   margin-left: 52px;
   margin-bottom: 8px;
-  gap: 12px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .row .id-left {
   font-size: 13px;
   font-weight: 600;
   color: var(--pink-secondary);
+  white-space: nowrap;
 }
 
 .row .game-right {
   font-size: 13px;
   font-weight: 400;
   color: var(--text-primary);
-  text-align: right;
+  text-align: left;
   flex: 1;
 }
 
@@ -379,8 +381,13 @@ body {
 }
 
 /* ===== RIGHT SIDEBAR (Genre Stats) ===== */
+.sidebar.right {
+  padding: 24px 16px;
+}
+
 .panel.genres h3 {
   margin-bottom: 20px;
+  font-size: 16px;
 }
 
 .genre-table {
@@ -391,28 +398,30 @@ body {
 
 .grid-head {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 12px;
-  padding: 12px;
+  grid-template-columns: 2.5fr 1fr 1fr 1.2fr;
+  gap: 8px;
+  padding: 12px 8px;
   background: var(--pink-dark);
   border-radius: 8px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: white;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  align-items: center;
 }
 
 .grid-row {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 12px;
-  padding: 12px;
+  grid-template-columns: 2.5fr 1fr 1fr 1.2fr;
+  gap: 8px;
+  padding: 12px 8px;
   background: rgba(255, 45, 149, 0.05);
   border: 1px solid var(--border);
   border-radius: 8px;
-  font-size: 13px;
+  font-size: 12px;
   transition: all 0.3s ease;
+  align-items: center;
 }
 
 .grid-row:hover {
@@ -423,6 +432,10 @@ body {
 .grid-row .type {
   color: var(--pink-secondary);
   font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
 }
 
 .grid-row div {
