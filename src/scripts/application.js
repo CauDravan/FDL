@@ -7,11 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const iconMap = { '-1': 'lv1f', '-2': 'lv2f', '-3': 'lv3f', '-46': 'lvinf', 'P': 'lvP', 'U': 'lvU', 'R': 'lvR' };
 
   function getIconFile(level) {
-    if (level == null) return `icons/lv_unknown.png`;
+    if (level == null) return `src/assets/icons/lv_unknown.png`;
     const trimmed = String(level).trim();
-    if (iconMap[trimmed]) return `icons/${iconMap[trimmed]}.png`;
+    if (iconMap[trimmed]) return `src/assets/icons/${iconMap[trimmed]}.png`;
     const numLevel = parseFloat(trimmed);
-    if (!isNaN(numLevel)) return `icons/lv${Math.floor(numLevel)}.png`;
+    if (!isNaN(numLevel)) return `src/assets/icons/lv${Math.floor(numLevel)}.png`;
     return `icons/lv${trimmed}.png`;
   }
 
