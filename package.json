@@ -1,0 +1,60 @@
+{
+  "name": "fdl",
+  "version": "1.0.0",
+  "description": "FDL website",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "type": "module"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CauDravan/FDL.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/CauDravan/FDL/issues"
+  },
+  "homepage": "https://github.com/CauDravan/FDL#readme",
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.17",
+    "autoprefixer": "^10.4.22",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.17",
+    "vite": "^7.2.7"
+  },
+  "dependencies": {
+    "baseline-browser-mapping": "^2.9.6",
+    "browserslist": "^4.28.1",
+    "caniuse-lite": "^1.0.30001760",
+    "detect-libc": "^2.1.2",
+    "electron-to-chromium": "^1.5.267",
+    "enhanced-resolve": "^5.18.3",
+    "esbuild": "^0.25.12",
+    "escalade": "^3.2.0",
+    "fdir": "^6.5.0",
+    "fraction.js": "^5.3.4",
+    "graceful-fs": "^4.2.11",
+    "jiti": "^2.6.1",
+    "lightningcss": "^1.30.2",
+    "lightningcss-win32-x64-msvc": "^1.30.2",
+    "magic-string": "^0.30.21",
+    "nanoid": "^3.3.11",
+    "node-releases": "^2.0.27",
+    "normalize-range": "^0.1.2",
+    "picocolors": "^1.1.1",
+    "picomatch": "^4.0.3",
+    "postcss-value-parser": "^4.2.0",
+    "rollup": "^4.53.3",
+    "source-map-js": "^1.2.1",
+    "tapable": "^2.3.0",
+    "tinyglobby": "^0.2.15",
+    "update-browserslist-db": "^1.2.2"
+  }
+}
