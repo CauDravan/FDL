@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (iconMap[trimmed]) return `src/assets/icons/${iconMap[trimmed]}.png`;
     const numLevel = parseFloat(trimmed);
     if (!isNaN(numLevel)) return `src/assets/icons/lv${Math.floor(numLevel)}.png`;
-    return `icons/lv${trimmed}.png`;
+    return `src/assets/icons/lv${trimmed}.png`;
   }
 
   function safeParseExp(v){
@@ -53,7 +53,7 @@ function createRow(data){
         const badge = document.createElement('div');
         badge.className = 'level-badge';
         const badgeImg = document.createElement('img');
-        badgeImg.src = `icons/lv${levelNum}.png`;
+        badgeImg.src = `src/assets/icons/lv${levelNum}.png`;
         badgeImg.alt = levelNum;
         badge.appendChild(badgeImg);
         iconWrap.appendChild(badge);
