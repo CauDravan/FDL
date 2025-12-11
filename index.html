@@ -5,76 +5,163 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CD Clears — Dashboard</title>
   <link rel="icon" type="image/png" href="src/assets/art/sob_cat.png" />
-  <!-- Orbitron font -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="src/css/style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            orbitron: ['Orbitron', 'sans-serif']
+          },
+          colors: {
+            pink: {
+              primary: '#ff2d95',
+              secondary: '#ff6bb5',
+              dark: '#c71866'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Orbitron', sans-serif; }
+    .scrollbar-pink::-webkit-scrollbar { width: 8px; height: 8px; }
+    .scrollbar-pink::-webkit-scrollbar-track { background: #0a0a0a; }
+    .scrollbar-pink::-webkit-scrollbar-thumb { background: #c71866; border-radius: 4px; }
+    .scrollbar-pink::-webkit-scrollbar-thumb:hover { background: #ff2d95; }
+  </style>
 </head>
-<body>
-  <div class="app">
-    <!-- LEFT (profile) -->
-    <aside class="sidebar left">
-      <div class="profile-wrap">
-        <img src="src/assets/art/my_profile.png" alt="avatar" class="avatar" />
-        <h2 class="name">CauDravan</h2>
-        <p class="bio">A random person:3
-          <br>Team Cats - Tuf Staff</br>
+<body class="bg-black text-white font-orbitron overflow-x-hidden">
+  <div class="grid lg:grid-cols-[320px_1fr_500px] md:grid-cols-[280px_1fr] grid-cols-1 min-h-screen">
+    
+    <!-- LEFT SIDEBAR (Profile) -->
+    <aside class="bg-gradient-to-b from-pink-950/20 via-zinc-900 to-pink-950/20 border-r border-pink-primary p-6 max-h-screen overflow-y-auto scrollbar-pink md:order-1 order-1 relative">
+      <div class="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-pink-primary/50 to-transparent"></div>
+      
+      <!-- Profile -->
+      <div class="text-center mb-8">
+        <img 
+          src="src/assets/art/my_profile.png" 
+          alt="avatar" 
+          class="w-30 h-30 rounded-full border-3 border-pink-primary shadow-lg shadow-pink-primary/30 mx-auto mb-4 transition-all hover:scale-105 hover:shadow-pink-primary/50"
+        />
+        <h2 class="text-3xl font-bold text-pink-primary mb-2" style="text-shadow: 0 0 10px rgba(255,45,149,0.3)">
+          CauDravan
+        </h2>
+        <p class="text-xs text-zinc-400 leading-relaxed bg-gradient-to-br from-pink-primary/8 to-pink-primary/2 border border-pink-primary/20 rounded-lg p-3 mt-3">
+          A random person:3<br />
+          Team Cats - TUF Staff
         </p>
       </div>
 
-      <div class="social-links">
-        <a href="https://docs.google.com/spreadsheets/d/1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o/edit?gid=1624969451#gid=1624969451" target="_blank" class="social-link">
-          <div class="social-icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-            </svg>
-          </div>
-          <span class="social-text">Google Sheets</span>
+      <!-- Social Links -->
+      <div class="space-y-3 mb-6">
+        <a 
+          href="https://docs.google.com/spreadsheets/d/1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o/edit?gid=1624969451#gid=1624969451" 
+          target="_blank"
+          class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-pink-primary/10 to-pink-primary/5 border border-pink-dark rounded-lg text-sm font-medium transition-all duration-300 hover:border-pink-primary hover:bg-pink-primary/15 hover:translate-x-1 hover:shadow-lg hover:shadow-pink-primary/30 group relative overflow-hidden"
+        >
+          <div class="absolute inset-0 bg-gradient-to-r from-transparent via-pink-primary/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500"></div>
+          <svg class="w-6 h-6 text-pink-primary transition-colors group-hover:text-pink-secondary relative z-10" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+          </svg>
+          <span class="text-zinc-400 group-hover:text-pink-secondary transition-colors relative z-10">Google Sheets</span>
         </a>
 
-        <a href="https://www.youtube.com/@caudravan" target="_blank" class="social-link">
-          <div class="social-icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-            </svg>
-          </div>
-          <span class="social-text">YouTube Channel</span>
+        <a 
+          href="https://www.youtube.com/@caudravan" 
+          target="_blank"
+          class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-pink-primary/10 to-pink-primary/5 border border-pink-dark rounded-lg text-sm font-medium transition-all duration-300 hover:border-pink-primary hover:bg-pink-primary/15 hover:translate-x-1 hover:shadow-lg hover:shadow-pink-primary/30 group relative overflow-hidden"
+        >
+          <div class="absolute inset-0 bg-gradient-to-r from-transparent via-pink-primary/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500"></div>
+          <svg class="w-6 h-6 text-pink-primary transition-colors group-hover:text-pink-secondary relative z-10" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+          <span class="text-zinc-400 group-hover:text-pink-secondary transition-colors relative z-10">YouTube Channel</span>
         </a>
       </div>
-      
-      <div class="panel stats">
-        <h3>Overview</h3>
-        <div class="line"><span>Clears:</span><strong id="totalRows">—</strong></div>
-        <div class="line"><span>Exp:</span><strong id="totalExp">—</strong></div>
-        <div class="line"><span>Top genre:</span><strong id="topGenre">—</strong></div>
-        <div class="line"><span>Games:</span><strong id="totalUniqueGames">—</strong></div>
+
+      <!-- Stats Panel -->
+      <div class="bg-gradient-to-br from-pink-primary/8 to-pink-primary/2 border border-pink-dark rounded-xl p-5 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-pink-primary to-transparent"></div>
+        <h3 class="text-lg font-semibold text-pink-secondary mb-4 uppercase tracking-wider">Overview</h3>
+        <div class="space-y-3 text-sm">
+          <div class="flex justify-between items-center py-2 border-b border-zinc-800">
+            <span class="text-zinc-400 font-light">Clears:</span>
+            <strong id="totalRows" class="text-pink-primary font-semibold">—</strong>
+          </div>
+          <div class="flex justify-between items-center py-2 border-b border-zinc-800">
+            <span class="text-zinc-400 font-light">Exp:</span>
+            <strong id="totalExp" class="text-pink-primary font-semibold">—</strong>
+          </div>
+          <div class="flex justify-between items-center py-2 border-b border-zinc-800">
+            <span class="text-zinc-400 font-light">Top genre:</span>
+            <strong id="topGenre" class="text-pink-primary font-semibold">—</strong>
+          </div>
+          <div class="flex justify-between items-center py-2">
+            <span class="text-zinc-400 font-light">Games:</span>
+            <strong id="totalUniqueGames" class="text-pink-primary font-semibold">—</strong>
+          </div>
+        </div>
       </div>
     </aside>
 
-    <!-- MIDDLE (list) -->
-    <main class="main-col">
-      <header class="topbar">
-        <div class="search-wrap">
-          <input id="searchInput" placeholder="Search levels..." />
-          <button id="hintToggle">?</button>
+    <!-- MIDDLE COLUMN (Main List) -->
+    <main class="bg-black max-h-screen overflow-y-auto scrollbar-pink md:order-2 order-2">
+      <!-- Search Bar -->
+      <header class="sticky top-0 bg-zinc-900 border-b-2 border-pink-primary p-5 z-50 shadow-2xl">
+        <div class="max-w-2xl mx-auto flex gap-3">
+          <div class="flex-1 relative">
+            <input
+              id="searchInput"
+              type="text"
+              placeholder="Search levels..."
+              class="w-full bg-black border border-pink-dark rounded-lg py-3 px-4 text-sm text-white placeholder-zinc-500 outline-none transition-all focus:border-pink-primary focus:shadow-lg focus:shadow-pink-primary/30 font-orbitron"
+            />
+          </div>
+          <button
+            id="hintToggle"
+            class="w-10 h-10 bg-pink-primary rounded-lg flex items-center justify-center transition-all hover:bg-pink-secondary hover:shadow-lg hover:shadow-pink-primary/30 hover:scale-105 text-white font-bold text-lg"
+          >
+            ?
+          </button>
         </div>
       </header>
 
-      <div id="searchHint" class="search-hint hidden">
-        Try filters like: <code>level=45</code>, <code>game=sudoku</code>, <code>genre=#puzzle</code> — combine with commas.
+      <!-- Search Hint -->
+      <div id="searchHint" class="hidden mx-6 mt-4 bg-pink-primary/10 border border-pink-dark rounded-lg p-4 text-sm text-zinc-400 leading-relaxed">
+        Try filters like: <code class="bg-black text-pink-secondary px-2 py-0.5 rounded text-xs font-mono">level=45</code>, <code class="bg-black text-pink-secondary px-2 py-0.5 rounded text-xs font-mono">game=sudoku</code>, <code class="bg-black text-pink-secondary px-2 py-0.5 rounded text-xs font-mono">genre=#puzzle</code> — combine with commas.
       </div>
 
-      <section id="dataContainer" class="list"></section>
+      <!-- Game Cards -->
+      <section id="dataContainer" class="p-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></section>
     </main>
 
-    <!-- RIGHT (genre stats) -->
-    <aside class="sidebar right" id="rightSidebar">
-      <div class="panel genres">
-        <h3>Statistics by Genre</h3>
-        <div id="genreTable" class="genre-table">
-          <div class="placeholder">Loading...</div>
+    <!-- RIGHT SIDEBAR (Genre Stats) -->
+    <aside class="bg-gradient-to-b from-pink-950/20 via-zinc-900 to-pink-950/20 border-l border-pink-primary p-4 max-h-screen overflow-y-auto scrollbar-pink lg:block md:hidden block md:order-3 order-3 relative">
+      <div class="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-transparent via-pink-primary/50 to-transparent"></div>
+      
+      <div class="bg-gradient-to-br from-pink-primary/8 to-pink-primary/2 border border-pink-dark rounded-xl p-5 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-pink-primary to-transparent"></div>
+        <h3 class="text-base font-semibold text-pink-secondary mb-5 uppercase tracking-wider">Statistics by Genre</h3>
+        
+        <!-- Header -->
+        <div class="grid grid-cols-[2.5fr_1fr_1fr_1.2fr] gap-3 px-3 py-3 bg-gradient-to-r from-pink-dark to-pink-900 rounded-lg text-xs font-bold text-white uppercase tracking-wide mb-2 shadow-lg shadow-pink-primary/30">
+          <div>Type</div>
+          <div class="text-right">Played</div>
+          <div class="text-right">Games</div>
+          <div class="text-right">Exp</div>
+        </div>
+
+        <!-- Genre Table -->
+        <div id="genreTable" class="space-y-2">
+          <div class="text-center py-10 text-zinc-500">Loading...</div>
         </div>
       </div>
     </aside>
+
   </div>
 
   <script src="src/scripts/application.js"></script>
