@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isNaN(numBS)) {
           const levelNum = Math.floor(numBS);
           const badge = document.createElement('div');
-          badge.className = 'absolute -top-1.5 -left-1.5 w-6 h-6 bg-black rounded-full border-2 border-pink-primary';
+          badge.className = 'absolute -top-1.5 -left-1.5 w-6 h-6 bg-black rounded-full';
           const badgeImg = document.createElement('img');
           badgeImg.src = `src/assets/icons/lv${levelNum}.png`;
           badgeImg.alt = levelNum;
@@ -102,14 +102,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Line 1: ID + Game name
     const line1 = document.createElement('div');
-    line1.className = 'flex items-baseline gap-2 mb-1.5 flex-wrap';
+    line1.className = 'flex items-baseline gap-2 mb-1 flex-wrap';
 
     const idText = document.createElement('span');
-    idText.className = 'text-sm font-semibold text-pink-secondary whitespace-nowrap';
+    idText.className = 'text-xs font-semibold text-pink-secondary whitespace-nowrap';
     idText.textContent = `#${data.ID || (data['IDL'] || '-')} -`;
 
     const gameText = document.createElement('span');
-    gameText.className = 'text-sm text-zinc-100 font-medium leading-relaxed';
+    gameText.className = 'text-xs text-zinc-100 font-medium leading-tight';
     gameText.textContent = data['Game'] || (data['IDL'] || '(unknown)');
 
     line1.appendChild(idText);
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Line 2: Own Rate - Better contrast
     const line2 = document.createElement('div');
-    line2.className = 'text-xs text-zinc-400 font-light leading-relaxed';
+    line2.className = 'text-xs text-zinc-400 font-light leading-tight';
     line2.textContent = data['Own Rate'] || data['Level'] || '-';
 
     textWrap.appendChild(line1);
