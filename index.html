@@ -31,6 +31,11 @@
     .scrollbar-pink::-webkit-scrollbar-track { background: #0a0a0a; }
     .scrollbar-pink::-webkit-scrollbar-thumb { background: #c71866; border-radius: 4px; }
     .scrollbar-pink::-webkit-scrollbar-thumb:hover { background: #ff2d95; }
+    
+    /* Custom tooltip styling */
+    [title] {
+      position: relative;
+    }
   </style>
 </head>
 <body class="bg-black text-white font-orbitron overflow-x-hidden">
@@ -135,8 +140,8 @@
         Try filters like: <code class="bg-black text-pink-secondary px-2 py-0.5 rounded text-xs font-mono">level=45</code>, <code class="bg-black text-pink-secondary px-2 py-0.5 rounded text-xs font-mono">game=sudoku</code>, <code class="bg-black text-pink-secondary px-2 py-0.5 rounded text-xs font-mono">genre=#puzzle</code> — combine with commas.
       </div>
 
-      <!-- Game Cards -->
-      <section id="dataContainer" class="p-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></section>
+      <!-- Game List - Row by row layout -->
+      <section id="dataContainer" class="p-6 space-y-3"></section>
     </main>
 
     <!-- RIGHT SIDEBAR (Genre Stats) -->

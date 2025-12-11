@@ -1,4 +1,4 @@
-// application.js - Optimized for Tailwind
+// application.js - Optimized with better text handling
 document.addEventListener('DOMContentLoaded', () => {
   const CONFIG = {
     sheetId: '1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o',
@@ -39,7 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
     return isNaN(parsed) ? 0 : parsed;
   };
 
-  // Create Game Card with Tailwind classes
+  // Truncate long text
+  const truncate = (text, maxLength = 30) => {
+    if (!text || text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+  };
+
+  // Create Row (horizontal layout like original)
   const createRow = (data) => {
     const row = document.createElement('div');
     row.className = 'relative bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800 rounded-xl p-4 cursor-pointer transition-all duration-300 hover:border-pink-primary hover:shadow-lg hover:shadow-pink-primary/30 hover:-translate-y-0.5 group overflow-hidden';
@@ -59,11 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
     leftBorder.className = 'absolute top-0 left-0 w-1 h-full bg-pink-primary scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-top';
     row.appendChild(leftBorder);
 
-    // Content wrapper
+    // Content wrapper - Horizontal layout
     const content = document.createElement('div');
     content.className = 'relative flex items-start gap-3';
 
-    // Icon wrapper
+    // Icon wrapper (left side)
     const iconWrap = document.createElement('div');
     iconWrap.className = 'relative flex-shrink-0';
 
@@ -96,24 +102,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     content.appendChild(iconWrap);
 
-    // Text content
+    // Text content (right side)
     const textWrap = document.createElement('div');
     textWrap.className = 'flex-1 min-w-0';
 
+    // Line 1: ID + Game name
     const line1 = document.createElement('div');
     line1.className = 'flex items-baseline gap-2 mb-1 flex-wrap';
 
-    const idLeft = document.createElement('span');
-    idLeft.className = 'text-sm font-semibold text-pink-secondary';
-    idLeft.textContent = `#${data.ID || (data['IDL'] || '-')} -`;
+    const idText = document.createElement('span');
+    idText.className = 'text-sm font-semibold text-pink-secondary whitespace-nowrap';
+    idText.textContent = `#${data.ID || (data['IDL'] || '-')} -`;
 
-    const gameRight = document.createElement('span');
-    gameRight.className = 'text-sm text-white flex-1';
-    gameRight.textContent = data['Game'] || (data['IDL'] || '(unknown)');
+    const gameText = document.createElement('span');
+    gameText.className = 'text-sm text-white';
+    gameText.textContent = data['Game'] || (data['IDL'] || '(unknown)');
 
-    line1.appendChild(idLeft);
-    line1.appendChild(gameRight);
+    line1.appendChild(idText);
+    line1.appendChild(gameText);
 
+    // Line 2: Own Rate
     const line2 = document.createElement('div');
     line2.className = 'text-xs text-zinc-500 font-light';
     line2.textContent = data['Own Rate'] || data['Level'] || '-';
@@ -208,12 +216,28 @@ document.addEventListener('DOMContentLoaded', () => {
       leftBorder.className = 'absolute top-0 left-0 w-0.5 h-full bg-gradient-to-b from-pink-primary to-pink-dark opacity-0 group-hover:opacity-100 transition-opacity';
       row.appendChild(leftBorder);
 
-      row.innerHTML += `
-        <div class="text-pink-secondary font-semibold truncate text-[11px]">${g}</div>
-        <div class="text-right text-zinc-400 tabular-nums">${s.played}</div>
-        <div class="text-right text-zinc-400 tabular-nums">${s.games.size}</div>
-        <div class="text-right text-zinc-400 tabular-nums">${Math.round(s.exp).toLocaleString()}</div>
-      `;
+      // Type column with truncation and tooltip
+      const typeDiv = document.createElement('div');
+      typeDiv.className = 'text-pink-secondary font-semibold truncate text-[11px]';
+      typeDiv.textContent = g;
+      typeDiv.title = g; // Show full text on hover
+
+      const playedDiv = document.createElement('div');
+      playedDiv.className = 'text-right text-zinc-400 tabular-nums';
+      playedDiv.textContent = s.played;
+
+      const gamesDiv = document.createElement('div');
+      gamesDiv.className = 'text-right text-zinc-400 tabular-nums';
+      gamesDiv.textContent = s.games.size;
+
+      const expDiv = document.createElement('div');
+      expDiv.className = 'text-right text-zinc-400 tabular-nums';
+      expDiv.textContent = Math.round(s.exp).toLocaleString();
+
+      row.appendChild(typeDiv);
+      row.appendChild(playedDiv);
+      row.appendChild(gamesDiv);
+      row.appendChild(expDiv);
 
       elements.genreTable.appendChild(row);
     });
