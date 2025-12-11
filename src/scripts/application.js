@@ -1,4 +1,4 @@
-// application.js - Optimized with better text handling
+// application.js - Improved version with better UX
 document.addEventListener('DOMContentLoaded', () => {
   const CONFIG = {
     sheetId: '1j6RlyzBKN0WX_HsLL4J0mzzF1TzYauxok55dIKA1U2o',
@@ -39,13 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return isNaN(parsed) ? 0 : parsed;
   };
 
-  // Truncate long text
-  const truncate = (text, maxLength = 30) => {
-    if (!text || text.length <= maxLength) return text;
-    return text.substring(0, maxLength) + '...';
-  };
-
-  // Create Row (horizontal layout like original)
+  // Create Row (improved contrast and spacing)
   const createRow = (data) => {
     const row = document.createElement('div');
     row.className = 'relative bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800 rounded-xl p-4 cursor-pointer transition-all duration-300 hover:border-pink-primary hover:shadow-lg hover:shadow-pink-primary/30 hover:-translate-y-0.5 group overflow-hidden';
@@ -69,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const content = document.createElement('div');
     content.className = 'relative flex items-start gap-3';
 
-    // Icon wrapper (left side)
+    // Icon wrapper (left side) - Larger badge
     const iconWrap = document.createElement('div');
     iconWrap.className = 'relative flex-shrink-0';
 
@@ -77,10 +71,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const img = document.createElement('img');
     img.src = getIconFile(mainLevel);
     img.alt = mainLevel || '';
-    img.className = 'w-10 h-10 rounded-lg shadow-lg';
+    img.className = 'w-12 h-12 rounded-lg shadow-lg';
     iconWrap.appendChild(img);
 
-    // Level badge for P, U, R
+    // Level badge for P, U, R - Larger and more visible
     const trimmedLevel = String(mainLevel).trim();
     if (['P', 'U', 'R'].includes(trimmedLevel)) {
       const bs = data.BS || data.Level;
@@ -89,11 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isNaN(numBS)) {
           const levelNum = Math.floor(numBS);
           const badge = document.createElement('div');
-          badge.className = 'absolute -top-1 -left-1 w-5 h-5';
+          badge.className = 'absolute -top-1.5 -left-1.5 w-6 h-6 bg-black rounded-full border-2 border-pink-primary';
           const badgeImg = document.createElement('img');
           badgeImg.src = `src/assets/icons/lv${levelNum}.png`;
           badgeImg.alt = levelNum;
-          badgeImg.className = 'w-full h-full rounded shadow-lg';
+          badgeImg.className = 'w-full h-full rounded-full';
           badge.appendChild(badgeImg);
           iconWrap.appendChild(badge);
         }
@@ -102,28 +96,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     content.appendChild(iconWrap);
 
-    // Text content (right side)
+    // Text content (right side) - Better contrast
     const textWrap = document.createElement('div');
     textWrap.className = 'flex-1 min-w-0';
 
     // Line 1: ID + Game name
     const line1 = document.createElement('div');
-    line1.className = 'flex items-baseline gap-2 mb-1 flex-wrap';
+    line1.className = 'flex items-baseline gap-2 mb-1.5 flex-wrap';
 
     const idText = document.createElement('span');
     idText.className = 'text-sm font-semibold text-pink-secondary whitespace-nowrap';
     idText.textContent = `#${data.ID || (data['IDL'] || '-')} -`;
 
     const gameText = document.createElement('span');
-    gameText.className = 'text-sm text-white';
+    gameText.className = 'text-sm text-zinc-100 font-medium leading-relaxed';
     gameText.textContent = data['Game'] || (data['IDL'] || '(unknown)');
 
     line1.appendChild(idText);
     line1.appendChild(gameText);
 
-    // Line 2: Own Rate
+    // Line 2: Own Rate - Better contrast
     const line2 = document.createElement('div');
-    line2.className = 'text-xs text-zinc-500 font-light';
+    line2.className = 'text-xs text-zinc-400 font-light leading-relaxed';
     line2.textContent = data['Own Rate'] || data['Level'] || '-';
 
     textWrap.appendChild(line1);
@@ -148,8 +142,16 @@ document.addEventListener('DOMContentLoaded', () => {
       displayData(allData);
     } catch (err) {
       console.error(err);
-      elements.container.innerHTML = `<div class="col-span-full text-center py-20 text-red-400">Error loading data: ${String(err)}</div>`;
-      elements.genreTable.innerHTML = `<div class="text-center py-10 text-red-400">Error</div>`;
+      elements.container.innerHTML = `
+        <div class="flex flex-col items-center justify-center py-20 gap-4">
+          <div class="w-16 h-16 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div>
+          <p class="text-red-400 text-center">Error loading data: ${String(err)}</p>
+          <button onclick="location.reload()" class="px-6 py-2 bg-pink-primary hover:bg-pink-secondary rounded-lg transition-colors">
+            Retry
+          </button>
+        </div>
+      `;
+      elements.genreTable.innerHTML = `<div class="text-center py-10 text-red-400">Error loading stats</div>`;
     }
   };
 
@@ -157,7 +159,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const displayData = (data) => {
     elements.container.innerHTML = '';
     if (!data || data.length === 0) {
-      elements.container.innerHTML = `<div class="col-span-full text-center py-20 text-zinc-500">No data found</div>`;
+      elements.container.innerHTML = `
+        <div class="flex flex-col items-center justify-center py-20 gap-4">
+          <svg class="w-16 h-16 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <p class="text-zinc-500 text-center">No levels found</p>
+        </div>
+      `;
       return;
     }
     data.forEach(r => elements.container.appendChild(createRow(r)));
@@ -192,24 +201,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const genres = Object.keys(genreStats).sort((a, b) => genreStats[b].exp - genreStats[a].exp);
     const topGenre = genres.length ? genres[0] : '—';
 
-    // Update stats
-    elements.totalRows.textContent = rows.length.toLocaleString();
-    elements.totalExp.textContent = Math.round(totalExp).toLocaleString();
+    // Update stats with animation
+    animateNumber(elements.totalRows, rows.length);
+    animateNumber(elements.totalExp, Math.round(totalExp));
     elements.topGenre.textContent = topGenre;
-    elements.totalUniqueGames.textContent = uniqueGames.size.toLocaleString();
+    animateNumber(elements.totalUniqueGames, uniqueGames.size);
 
     // Render genre table
     renderGenreTable(genres, genreStats);
   };
 
-  // Render Genre Table
+  // Animate number counting
+  const animateNumber = (element, target) => {
+    const duration = 1000;
+    const start = 0;
+    const increment = target / (duration / 16);
+    let current = start;
+
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) {
+        element.textContent = target.toLocaleString();
+        clearInterval(timer);
+      } else {
+        element.textContent = Math.floor(current).toLocaleString();
+      }
+    }, 16);
+  };
+
+  // Render Genre Table with better spacing
   const renderGenreTable = (genres, stats) => {
     elements.genreTable.innerHTML = '';
     
     genres.forEach(g => {
       const s = stats[g];
       const row = document.createElement('div');
-      row.className = 'grid grid-cols-[2.5fr_1fr_1fr_1.2fr] gap-3 px-3 py-3 bg-gradient-to-r from-pink-primary/5 to-pink-primary/2 border border-zinc-800 rounded-lg text-xs transition-all hover:border-pink-primary hover:bg-pink-primary/12 hover:translate-x-0.5 group relative overflow-hidden';
+      row.className = 'grid grid-cols-[2.5fr_1fr_1fr_1.2fr] gap-3 px-3 py-3.5 bg-gradient-to-r from-pink-primary/5 to-pink-primary/2 border border-zinc-800 rounded-lg text-xs transition-all hover:border-pink-primary hover:bg-pink-primary/12 hover:translate-x-0.5 group relative overflow-hidden';
 
       // Left border effect
       const leftBorder = document.createElement('div');
@@ -223,15 +250,15 @@ document.addEventListener('DOMContentLoaded', () => {
       typeDiv.title = g; // Show full text on hover
 
       const playedDiv = document.createElement('div');
-      playedDiv.className = 'text-right text-zinc-400 tabular-nums';
+      playedDiv.className = 'text-right text-zinc-300 tabular-nums font-medium';
       playedDiv.textContent = s.played;
 
       const gamesDiv = document.createElement('div');
-      gamesDiv.className = 'text-right text-zinc-400 tabular-nums';
+      gamesDiv.className = 'text-right text-zinc-300 tabular-nums font-medium';
       gamesDiv.textContent = s.games.size;
 
       const expDiv = document.createElement('div');
-      expDiv.className = 'text-right text-zinc-400 tabular-nums';
+      expDiv.className = 'text-right text-zinc-300 tabular-nums font-medium';
       expDiv.textContent = Math.round(s.exp).toLocaleString();
 
       row.appendChild(typeDiv);
