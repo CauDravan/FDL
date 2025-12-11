@@ -690,3 +690,9 @@ body {
     gap: 8px;
   }
 }
+
+@import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
