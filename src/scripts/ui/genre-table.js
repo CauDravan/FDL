@@ -14,7 +14,7 @@ export function renderGenreTable(sortedGenres, genreStats) {
     const stats = genreStats[genre];
     
     const row = document.createElement('div');
-    row.className = 'grid grid-cols-[2.5fr_1fr_1fr_1.2fr] gap-3 px-3 py-3.5 bg-gradient-to-r from-pink-primary/5 to-pink-primary/2 border border-zinc-800 rounded-lg text-xs transition-all hover:border-pink-primary hover:bg-pink-primary/12 hover:translate-x-0.5 group relative overflow-hidden';
+    row.className ='grid grid-cols-[2.5fr_1fr_1fr_1.2fr] gap-3 px-3 py-3.5 bg-gradient-to-r from-pink-primary/5 to-pink-primary/2 border border-zinc-800 rounded-lg text-xs transition-all hover:border-pink-primary hover:bg-pink-primary/12 hover:translate-x-0.5 group relative overflow-hidden';
 
     // Left border effect
     const leftBorder = document.createElement('div');
