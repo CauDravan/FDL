@@ -25,30 +25,9 @@
       }
     }
   </script>
-  <style>
-    body { font-family: 'Orbitron', sans-serif; }
-    .scrollbar-pink::-webkit-scrollbar { width: 10px; height: 10px; }
-    .scrollbar-pink::-webkit-scrollbar-track { background: #0a0a0a; }
-    .scrollbar-pink::-webkit-scrollbar-thumb { background: #c71866; border-radius: 5px; }
-    .scrollbar-pink::-webkit-scrollbar-thumb:hover { background: #ff2d95; }
-    
-    /* Spinner animation */
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    .animate-spin {
-      animation: spin 1s linear infinite;
-    }
-    
-    /* Pulse animation for loading */
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-    .animate-pulse {
-      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
-  </style>
+  <link rel="stylesheet" href="src/styles/main.css">
+  <link rel="stylesheet" href="src/styles/components.css">
+  <link rel="stylesheet" href="src/styles/animations.css">
 </head>
 <body class="bg-black text-white font-orbitron overflow-x-hidden">
   <div class="grid lg:grid-cols-[320px_1fr_520px] md:grid-cols-[280px_1fr] grid-cols-1 min-h-screen">
@@ -216,6 +195,15 @@
 
   </div>
 
-  <script src="src/scripts/application.js"></script>
+  <!-- Scripts -->
+  <script type="module" src="src/scripts/config.js"></script>
+  <script type="module" src="src/scripts/utils.js"></script>
+  <script type="module" src="src/scripts/api.js"></script>
+  <script type="module" src="src/scripts/stats.js"></script>
+  <script type="module" src="src/scripts/ui/row.js"></script>
+  <script type="module" src="src/scripts/ui/stats-panel.js"></script>
+  <script type="module" src="src/scripts/ui/genre-table.js"></script>
+  <script type="module" src="src/scripts/search.js"></script>
+  <script type="module" src="src/scripts/main.js"></script>
 </body>
 </html>

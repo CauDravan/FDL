@@ -1,0 +1,24 @@
+/* main.css - Base styles and typography */
+
+body {
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* Custom Scrollbar */
+.scrollbar-pink::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.scrollbar-pink::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+.scrollbar-pink::-webkit-scrollbar-thumb {
+  background: #c71866;
+  border-radius: 5px;
+}
+
+.scrollbar-pink::-webkit-scrollbar-thumb:hover {
+  background: #ff2d95;
+}
