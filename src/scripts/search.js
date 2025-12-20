@@ -3,6 +3,9 @@
 /**
  * Filter data based on search query
  */
+
+import gameKeywords from 'src/data/keyword.json';
+
 export function filterData(allData, query) {
   if (!query.trim()) {
     return allData;
@@ -10,9 +13,17 @@ export function filterData(allData, query) {
 
   // Simple game name search
   if (!query.includes('=')) {
-    return allData.filter(row => 
-      (row['Game'] || '').toLowerCase().includes(query.toLowerCase())
-    );
+    const q = query.toLowerCase();
+
+    return allData.filter(row => {
+      const game = (row['Game'] || '').toLowerCase();
+      if (game.includes(q)) return true;
+
+      const id = String(row['ID'] || '').toLowerCase();
+      const aliases = gameKeywords[id] || [];
+
+      return aliases.some(k => k.includes(q));
+    });
   }
 
   // Advanced filter with key=value pairs
@@ -29,10 +40,16 @@ export function filterData(allData, query) {
     if (!key) return;
 
     if (key === 'game') {
-      filtered = filtered.filter(row => 
-        (row['Game'] || '').toLowerCase().includes(value)
-      );
-    } 
+      filtered = filtered.filter(row => {
+        const game = (row['Game'] || '').toLowerCase();
+        if (game.includes(value)) return true;
+
+        const id = String(row['ID'] || '').toLowerCase();
+        const aliases = gameKeywords[id] || [];
+
+        return aliases.some(k => k.includes(value));
+      });
+    }
     else if (key === 'genre' || key === 'type') {
       filtered = filtered.filter(row => {
         const raw = String(row['Genres'] || '').toLowerCase();
