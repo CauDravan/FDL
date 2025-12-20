@@ -11,7 +11,7 @@ export function createRow(data) {
   
   row.onclick = () => {
     const idl = data['IDL'] || '';
-    window.location.href = `details.html?id=${encodeURIComponent(idl)}`;
+    window.location.href = `pages/details.html?id=${encodeURIComponent(idl)}`;
   };
 
   // Background overlay effect
