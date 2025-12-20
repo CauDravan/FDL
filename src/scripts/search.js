@@ -4,7 +4,7 @@
  * Filter data based on search query
  */
 
-import gameKeywords from 'src/data/keyword.json';
+import gameKeywords from "../data/keyword.json";
 
 export function filterData(allData, query) {
   if (!query.trim()) {
