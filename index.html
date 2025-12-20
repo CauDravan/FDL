@@ -131,7 +131,7 @@
     <main class="bg-black max-h-screen overflow-y-auto scrollbar-pink md:order-2 order-2">
       <!-- Search Bar -->
       <header class="sticky top-0 bg-zinc-900 border-b-2 border-pink-primary p-5 z-50 shadow-2xl">
-        <div class="max-w-3xl mx-auto flex gap-3 relative">
+        <div class="max-w-3xl mx-auto flex gap-3">
           <div class="flex-1 relative">
             <input
               id="searchInput"
@@ -140,14 +140,16 @@
               class="w-full bg-black border border-pink-dark rounded-lg py-3 px-4 text-sm text-white placeholder-zinc-500 outline-none transition-all focus:border-pink-primary focus:shadow-lg focus:shadow-pink-primary/30 font-orbitron"
             />
           </div>
-          <button
-            id="hintToggle"
-            class="w-11 h-11 bg-pink-primary rounded-lg flex items-center justify-center transition-all hover:bg-pink-secondary hover:shadow-lg hover:shadow-pink-primary/30 hover:scale-105 text-white font-bold text-xl flex-shrink-0"
-            title="Show search help"
-          >
-            ?
-          </button>
-          
+          <div class="relative flex-shrink-0">
+            <button
+              id="hintToggle"
+              class="w-11 h-11 bg-pink-primary rounded-lg flex items-center justify-center transition-all hover:bg-pink-secondary hover:shadow-lg hover:shadow-pink-primary/30 hover:scale-105 text-white font-bold text-xl flex-shrink-0"
+              title="Show search help"
+            >
+              ?
+            </button>
+          </div>
+
           <!-- Search Hint -->
           <div id="searchHint" class="hidden mx-6 mt-4 bg-pink-primary/10 border border-pink-dark rounded-lg p-4 text-sm text-zinc-300 leading-relaxed">
             <strong class="text-pink-secondary">Search Examples:</strong><br/>
