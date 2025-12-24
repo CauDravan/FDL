@@ -5,20 +5,38 @@ body {
 }
 
 /* Custom Scrollbar */
+
+.scrollbar-pink {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #ff2d95 transparent;
+}
+
+/* Chrome / Edge / Brave */
 .scrollbar-pink::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 
 .scrollbar-pink::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background: rgba(255, 45, 149, 0.08);
+  border-radius: 999px;
 }
 
 .scrollbar-pink::-webkit-scrollbar-thumb {
-  background: #c71866;
-  border-radius: 5px;
+  background: linear-gradient(
+    180deg,
+    #ff2d95,
+    #ff6bb5
+  );
+  border-radius: 999px;
+  border: 2px solid transparent; /* giữ form khi hover */
+  background-clip: content-box;
 }
 
 .scrollbar-pink::-webkit-scrollbar-thumb:hover {
-  background: #ff2d95;
+  background: linear-gradient(
+    180deg,
+    #ff6bb5,
+    #ff2d95
+  );
 }
