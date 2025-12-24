@@ -4,7 +4,12 @@
  * Filter data based on search query
  */
 
-import gameKeywords from "../data/keyword.json" assert { type: 'json' };
+let gameKeywords = {};
+
+export async function loadKeywords() {
+  const res = await fetch('/data/keyword.json');
+  gameKeywords = await res.json();
+}
 
 export function filterData(allData, query) {
   if (!query.trim()) {

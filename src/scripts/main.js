@@ -5,7 +5,7 @@ import { computeStats } from './stats.js';
 import { createRow } from './ui/row.js';
 import { updateStatsPanel } from './ui/stats-panel.js';
 import { renderGenreTable } from './ui/genre-table.js';
-import { filterData } from './search.js';
+import { filterData, loadKeywords } from './search.js';
 
 // Global state
 let allData = [];
@@ -57,6 +57,7 @@ async function initialize() {
   try {
     // Load data
     allData = await loadData();
+    await loadKeywords();
     
     // Compute and display statistics
     const stats = computeStats(allData);
