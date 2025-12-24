@@ -31,6 +31,9 @@ body {
   border-radius: 999px;
   border: 2px solid transparent; /* giữ form khi hover */
   background-clip: content-box;
+  box-shadow:
+    0 0 6px rgba(255, 45, 149, 0.6),
+    inset 0 0 4px rgba(255, 255, 255, 0.2);
 }
 
 .scrollbar-pink::-webkit-scrollbar-thumb:hover {
@@ -39,4 +42,9 @@ body {
     #ff6bb5,
     #ff2d95
   );
+}
+
+/* Disable overlay scrollbar behavior */
+html {
+  scrollbar-gutter: stable;
 }
