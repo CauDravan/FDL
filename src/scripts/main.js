@@ -19,6 +19,8 @@ const elements = {
   genreTable: document.getElementById('genreTable')
 };
 
+let visibleCount = 20;
+
 /**
  * Display data rows
  */
@@ -37,7 +39,7 @@ function displayData(data) {
     return;
   }
   
-  data.forEach(row => {
+  data.slice(0, visibleCount).forEach(row => {
     elements.container.appendChild(createRow(row));
   });
 }
