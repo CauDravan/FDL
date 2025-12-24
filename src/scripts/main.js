@@ -9,6 +9,11 @@ import { filterData, loadKeywords } from './search.js';
 
 // Global state
 let allData = [];
+let currentData = [];
+
+// Pagination
+const PAGE_SIZE = 20;
+let visibleCount = PAGE_SIZE;
 
 // DOM elements
 const elements = {
@@ -19,29 +24,35 @@ const elements = {
   genreTable: document.getElementById('genreTable')
 };
 
-let visibleCount = 20;
-
 /**
- * Display data rows
+ * Display data rows (supports infinite scroll)
  */
-function displayData(data) {
-  elements.container.innerHTML = '';
-  
+function displayData(data, reset = false) {
+  if (reset) {
+    elements.container.innerHTML = '';
+    visibleCount = PAGE_SIZE;
+  }
+
+  currentData = data;
+
   if (!data || data.length === 0) {
     elements.container.innerHTML = `
       <div class="flex flex-col items-center justify-center py-20 gap-4">
-        <svg class="w-16 h-16 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-        <p class="text-zinc-500 text-center">No levels found</p>
+        <p class="text-zinc-500">No levels found</p>
       </div>
     `;
     return;
   }
-  
-  data.slice(0, visibleCount).forEach(row => {
-    elements.container.appendChild(createRow(row));
-  });
+
+  const fragment = document.createDocumentFragment();
+
+  data
+    .slice(elements.container.children.length, visibleCount)
+    .forEach(row => {
+      fragment.appendChild(createRow(row));
+    });
+
+  elements.container.appendChild(fragment);
 }
 
 /**
@@ -49,50 +60,11 @@ function displayData(data) {
  */
 function handleSearch(query) {
   const filtered = filterData(allData, query);
-  displayData(filtered);
+  displayData(filtered, true);
 }
 
 /**
- * Initialize the application
- */
-async function initialize() {
-  try {
-    // Load data
-    allData = await loadData();
-    await loadKeywords();
-    
-    // Compute and display statistics
-    const stats = computeStats(allData);
-    updateStatsPanel(stats);
-    renderGenreTable(stats.sortedGenres, stats.genreStats);
-    
-    // Display all data initially
-    displayData(allData);
-    
-  } catch (error) {
-    console.error('Initialization error:', error);
-    
-    // Show error message
-    elements.container.innerHTML = `
-      <div class="flex flex-col items-center justify-center py-20 gap-4">
-        <div class="w-16 h-16 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div>
-        <p class="text-red-400 text-center">Error loading data: ${String(error)}</p>
-        <button onclick="location.reload()" class="px-6 py-2 bg-pink-primary hover:bg-pink-secondary rounded-lg transition-colors">
-          Retry
-        </button>
-      </div>
-    `;
-    
-    if (elements.genreTable) {
-      elements.genreTable.innerHTML = `
-        <div class="text-center py-10 text-red-400">Error loading stats</div>
-      `;
-    }
-  }
-}
-
-/**
- * Set up event listeners
+ * Set up all event listeners
  */
 function setupEventListeners() {
   // Search input
@@ -107,6 +79,41 @@ function setupEventListeners() {
     elements.hintToggle.addEventListener('click', () => {
       elements.searchHint.classList.toggle('hidden');
     });
+  }
+
+  // Infinite scroll (middle column)
+  const mainScroll = document.querySelector('main');
+  if (mainScroll) {
+    mainScroll.addEventListener('scroll', () => {
+      const { scrollTop, scrollHeight, clientHeight } = mainScroll;
+
+      if (scrollTop + clientHeight >= scrollHeight - 150) {
+        if (visibleCount < currentData.length) {
+          visibleCount += PAGE_SIZE;
+          displayData(currentData);
+        }
+      }
+    });
+  }
+}
+
+/**
+ * Initialize the application
+ */
+async function initialize() {
+  try {
+    allData = await loadData();
+    await loadKeywords();
+
+    const stats = computeStats(allData);
+    updateStatsPanel(stats);
+    renderGenreTable(stats.sortedGenres, stats.genreStats);
+
+    displayData(allData, true);
+
+  } catch (error) {
+    console.error('Initialization error:', error);
+    elements.container.innerHTML = `<p class="text-red-400">Error loading data</p>`;
   }
 }
 
