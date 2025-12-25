@@ -7,7 +7,7 @@
 let gameKeywords = {};
 
 export async function loadKeywords() {
-  const res = await fetch('/data/keyword.json');
+  const res = await fetch('data/keyword.json');
   gameKeywords = await res.json();
 }
 
