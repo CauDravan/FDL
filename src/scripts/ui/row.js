@@ -1,6 +1,6 @@
 // ui/row.js - Create game row component
 
-import { getIconFile } from '../utils.js';
+import { getIconFile, getSkillIcon } from '../utils.js';
 
 /**
  * Create a game row element
@@ -91,4 +91,27 @@ export function createRow(data) {
 
   row.appendChild(content);
   return row;
+
+  // Line 3: Skillset icons
+  const line3 = document.createElement('div');
+  line3.className = 'flex items-center gap-1 mt-1';
+
+  const skills = [
+    data['Data'],
+    data['Vision'],
+    data['Speed'],
+    data['Acc'],
+    data['Str']
+  ];
+
+  skills.forEach(skill => {
+    const img = document.createElement('img');
+    img.src = getSkillIcon(skill);
+    img.alt = skill || '';
+    img.className = 'w-4 h-4 opacity-90 group-hover:opacity-100 transition';
+    img.loading = "lazy";
+    line3.appendChild(img);
+  });
+
+  textWrap.appendChild(line3);
 }

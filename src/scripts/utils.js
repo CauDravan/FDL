@@ -56,3 +56,65 @@ export function animateNumber(element, target) {
     }
   }, 16);
 }
+
+/**
+ * Convert skill grade to icon file
+ */
+export function getSkillIcon(skill) {
+  if (!skill) return 'src/assets/skillset_icons/unk.png';
+
+  const s = String(skill).trim().toUpperCase();
+
+  // A grades
+  if (s.startsWith('A')) {
+    if (s === 'A') return 'src/assets/skillset_icons/a.png';
+    if (s === 'A+') return 'src/assets/skillset_icons/a1.png';
+    if (s === 'A++') return 'src/assets/skillset_icons/a2.png';
+    if (s === 'A+++') return 'src/assets/skillset_icons/a3.png';
+  }
+
+  // S grades
+  if (s.startsWith('S')) {
+    if (s === 'S') return 'src/assets/skillset_icons/s.png';
+    if (s === 'S+') return 'src/assets/skillset_icons/s1.png';
+    if (s === 'S++') return 'src/assets/skillset_icons/s2.png';
+    if (s === 'S+++') return 'src/assets/skillset_icons/s3.png';
+  }
+
+  // R grades
+  if (s.startsWith('R')) {
+    if (s === 'R') return 'src/assets/skillset_icons/r.png';
+
+    const match = s.match(/R\+(\d+)/);
+    if (match) {
+      return `src/assets/skillset_icons/r${match[1]}.png`;
+    }
+  }
+
+  // Ex grades
+  if (s.startsWith('EX')) {
+    if (s === 'EX') return 'src/assets/skillset_icons/ex.png';
+    if (s === 'EX+') return 'src/assets/skillset_icons/ex1.png';
+    if (s === 'EX++') return 'src/assets/skillset_icons/ex2.png';
+    if (s === 'EX+++') return 'src/assets/skillset_icons/ex3.png';
+  }
+
+  // Simple ones
+  const map = {
+    'B': 'b.png',
+    'C': 'c.png',
+    'D': 'd.png',
+    'E': 'e.png',
+    'F': 'f.png',
+    'IR': 'ir.png',
+    'L': 'l.png',
+    'P': 'p.png',
+    'T': 't.png'
+  };
+
+  if (map[s]) {
+    return `src/assets/skillset_icons/${map[s]}`;
+  }
+
+  return 'src/assets/skillset_icons/unk.png';
+}
