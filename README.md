@@ -1,7 +1,7 @@
 # FDL Project
 
 ## Overview
-FDL is a modern web application designed to provide users with an intuitive interface for managing and accessing various resources. The application is built using HTML, CSS, and JavaScript, leveraging the power of Tailwind CSS for styling.
+CD Archievements is a modern web application designed to provide users with an intuitive interface for managing and accessing various resources. The application is built using HTML, CSS, and JavaScript, leveraging the power of Tailwind CSS for styling.
 
 ## Features
 - **Responsive Design**: The application is fully responsive, ensuring a seamless experience across devices.
