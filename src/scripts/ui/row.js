@@ -67,14 +67,14 @@ export function createRow(data) {
 
   // Line 1: ID + Game name
   const line1 = document.createElement('div');
-  line1.className = 'flex items-baseline gap-2 mb-1 overflow-hidden';
+  line1.className = 'flex items-baseline gap-1 mb-1 overflow-hidden whitespace-nowrap group-hover:overflow-visible';
 
   const idText = document.createElement('span');
-  idText.className = 'text-[10px] font-semibold text-pink-secondary whitespace-nowrap';
-  idText.textContent = `#${data.ID || (data['IDL'] || '-')} -`;
+  idText.className = 'text-[10px] font-semibold text-pink-secondary whitespace-nowrap opacity-80';
+  idText.textContent = `#${data.ID || (data['IDL'] || '-')}`;
 
   const gameText = document.createElement('span');
-  gameText.className = 'text-[10px] text-zinc-100 font-medium leading-tight truncate max-w-[140px]';
+  gameText.className = 'text-[10px] text-zinc-100 font-medium leading-tight truncate max-w-[140px] group-hover:max-w-[200px] transition-max-width duration-300';
   gameText.textContent = data['Game'] || (data['IDL'] || '(unknown)');
 
   line1.appendChild(idText);
