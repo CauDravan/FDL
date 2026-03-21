@@ -7,7 +7,7 @@
 let gameKeywords = {};
 
 export async function loadKeywords() {
-  const res = await fetch('src/data/keyword.json');
+  const res = await fetch(new URL('../data/keyword.json', import.meta.url));
   gameKeywords = await res.json();
 }
 
