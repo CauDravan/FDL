@@ -6,23 +6,23 @@ import { CONFIG } from './config.js';
  * Get icon file path based on level
  */
 export function getIconFile(level) {
-  if (level == null) return 'src/assets/icons/lv_unknown.png';
+  if (level == null) return 'src/assets/diff_icons/lv_unknown.png';
   
   const trimmed = String(level).trim();
   
   // Check if it's a special icon
   if (CONFIG.iconMap[trimmed]) {
-    return `src/assets/icons/${CONFIG.iconMap[trimmed]}.png`;
+    return `src/assets/diff_icons/${CONFIG.iconMap[trimmed]}.png`;
   }
   
   // Parse as number and get floor value
   const numLevel = parseFloat(trimmed);
   if (!isNaN(numLevel)) {
-    return `src/assets/icons/lv${Math.floor(numLevel)}.png`;
+    return `src/assets/diff_icons/lv${Math.floor(numLevel)}.png`;
   }
   
   // Default fallback
-  return `src/assets/icons/lv${trimmed}.png`;
+  return `src/assets/diff_icons/lv${trimmed}.png`;
 }
 
 /**

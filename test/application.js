@@ -24,12 +24,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Utility Functions
   const getIconFile = (level) => {
-    if (level == null) return 'src/assets/icons/lv_unknown.png';
+    if (level == null) return 'src/assets/diff_icons/lv_unknown.png';
     const trimmed = String(level).trim();
-    if (CONFIG.iconMap[trimmed]) return `src/assets/icons/${CONFIG.iconMap[trimmed]}.png`;
+    if (CONFIG.iconMap[trimmed]) return `src/assets/diff_icons/${CONFIG.iconMap[trimmed]}.png`;
     const numLevel = parseFloat(trimmed);
-    if (!isNaN(numLevel)) return `src/assets/icons/lv${Math.floor(numLevel)}.png`;
-    return `src/assets/icons/lv${trimmed}.png`;
+    if (!isNaN(numLevel)) return `src/assets/diff_icons/lv${Math.floor(numLevel)}.png`;
+    return `src/assets/diff_icons/lv${trimmed}.png`;
   };
 
   const safeParseExp = (v) => {
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const badge = document.createElement('div');
           badge.className = 'absolute -top-1.5 -left-1.5 w-6 h-6 bg-black rounded-full';
           const badgeImg = document.createElement('img');
-          badgeImg.src = `src/assets/icons/lv${levelNum}.png`;
+          badgeImg.src = `src/assets/diff_icons/lv${levelNum}.png`;
           badgeImg.alt = levelNum;
           badgeImg.className = 'w-full h-full rounded-full';
           badge.appendChild(badgeImg);

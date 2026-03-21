@@ -50,7 +50,7 @@ export function createRow(data) {
         const badge = document.createElement('div');
         badge.className = 'absolute -top-1.5 -left-1.5 w-6 h-6 bg-black rounded-full';
         const badgeImg = document.createElement('img');
-        badgeImg.src = `src/assets/icons/lv${levelNum}.png`;
+        badgeImg.src = `src/assets/diff_icons/lv${levelNum}.png`;
         badgeImg.alt = levelNum;
         badgeImg.className = 'w-full h-full rounded-full';
         badge.appendChild(badgeImg);
