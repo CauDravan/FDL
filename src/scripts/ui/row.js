@@ -30,7 +30,7 @@ export function createRow(data) {
 
   // Icon wrapper (left side)
   const iconWrap = document.createElement('div');
-  iconWrap.className = 'relative flex-shrink-0';
+  iconWrap.className = 'relative flex-shrink-0 self-center';
 
   const mainLevel = data.Level || data.BS;
   const img = document.createElement('img');
@@ -85,13 +85,6 @@ export function createRow(data) {
   line2.className = 'text-[10px] text-zinc-400 font-light leading-tight';
   line2.textContent = data['Own Rate'] || data['Level'] || '-';
 
-  textWrap.appendChild(line1);
-  textWrap.appendChild(line2);
-  content.appendChild(textWrap);
-
-  row.appendChild(content);
-  return row;
-
   // Line 3: Skillset icons
   const line3 = document.createElement('div');
   line3.className = 'flex items-center gap-1 mt-1';
@@ -108,10 +101,16 @@ export function createRow(data) {
     const img = document.createElement('img');
     img.src = getSkillIcon(skill);
     img.alt = skill || '';
-    img.className = 'w-4 h-4 opacity-90 group-hover:opacity-100 transition';
+    img.className = 'w-8 h-8 opacity-90 group-hover:opacity-100 transition';
     img.loading = "lazy";
     line3.appendChild(img);
   });
 
+  textWrap.appendChild(line1);
+  textWrap.appendChild(line2);
   textWrap.appendChild(line3);
+  content.appendChild(textWrap);
+
+  row.appendChild(content);
+  return row;
 }

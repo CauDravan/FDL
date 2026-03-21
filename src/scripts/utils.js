@@ -83,8 +83,18 @@ export function getSkillIcon(skill) {
 
   // R grades
   if (s.startsWith('R')) {
-    if (s === 'R') return 'src/assets/skillset_icons/r.png';
 
+    // R
+    if (s === 'R') {
+      return 'src/assets/skillset_icons/r.png';
+    }
+
+    // R+
+    if (s === 'R+') {
+      return 'src/assets/skillset_icons/r1.png';
+    }
+
+    // R+2, R+3...
     const match = s.match(/R\+(\d+)/);
     if (match) {
       return `src/assets/skillset_icons/r${match[1]}.png`;
