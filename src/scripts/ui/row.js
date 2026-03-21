@@ -67,14 +67,14 @@ export function createRow(data) {
 
   // Line 1: ID + Game name
   const line1 = document.createElement('div');
-  line1.className = 'flex items-baseline gap-2 mb-1 flex-wrap';
+  line1.className = 'flex items-baseline gap-2 mb-1 overflow-hidden';
 
   const idText = document.createElement('span');
-  idText.className = 'text-xs font-semibold text-pink-secondary whitespace-nowrap';
+  idText.className = 'text-[10px] font-semibold text-pink-secondary whitespace-nowrap';
   idText.textContent = `#${data.ID || (data['IDL'] || '-')} -`;
 
   const gameText = document.createElement('span');
-  gameText.className = 'text-xs text-zinc-100 font-medium leading-tight';
+  gameText.className = 'text-[10px] text-zinc-100 font-medium leading-tight truncate max-w-[140px]';
   gameText.textContent = data['Game'] || (data['IDL'] || '(unknown)');
 
   line1.appendChild(idText);
@@ -82,7 +82,7 @@ export function createRow(data) {
 
   // Line 2: Own Rate
   const line2 = document.createElement('div');
-  line2.className = 'text-xs text-zinc-400 font-light leading-tight';
+  line2.className = 'text-[10px] text-zinc-400 font-light leading-tight';
   line2.textContent = data['Own Rate'] || data['Level'] || '-';
 
   textWrap.appendChild(line1);
