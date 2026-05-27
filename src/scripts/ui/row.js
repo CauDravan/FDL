@@ -32,7 +32,7 @@ export function createRow(data) {
   const iconWrap = document.createElement('div');
   iconWrap.className = 'relative flex-shrink-0 self-center';
 
-  const mainLevel = data.Level || data.BS;
+  const mainLevel = data.Obj || data.BS;
   const img = document.createElement('img');
   img.src = getIconFile(mainLevel);
   img.alt = mainLevel || '';
@@ -42,7 +42,7 @@ export function createRow(data) {
   // Level badge for P, U, R
   const trimmedLevel = String(mainLevel).trim();
   if (['P', 'U', 'R'].includes(trimmedLevel)) {
-    const bs = data.BS || data.Level;
+    const bs = data.BS || data.Obj;
     if (bs != null) {
       const numBS = parseFloat(String(bs).replace(/[^\d\.\-]/g, ''));
       if (!isNaN(numBS)) {

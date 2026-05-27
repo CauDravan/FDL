@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const iconWrap = document.createElement('div');
     iconWrap.className = 'relative flex-shrink-0';
 
-    const mainLevel = data.Level || data.BS;
+    const mainLevel = data.Obj || data.BS;
     const img = document.createElement('img');
     img.src = getIconFile(mainLevel);
     img.alt = mainLevel || '';
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Level badge for P, U, R - Larger and more visible
     const trimmedLevel = String(mainLevel).trim();
     if (['P', 'U', 'R'].includes(trimmedLevel)) {
-      const bs = data.BS || data.Level;
+      const bs = data.BS || data.Obj;
       if (bs != null) {
         const numBS = parseFloat(String(bs).replace(/[^\d\.\-]/g, ''));
         if (!isNaN(numBS)) {
