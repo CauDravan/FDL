@@ -83,7 +83,7 @@ export function createRow(data) {
   // Line 2: Own Rate
   const line2 = document.createElement('div');
   line2.className = 'text-[10px] text-zinc-400 font-light leading-tight';
-  line2.textContent = data['Own Rate'] || data['Level'] || '-';
+  line2.textContent = data['Own Rate'] || data['Obj'] || '-';
 
   // Line 3: Skillset icons
   const line3 = document.createElement('div');

@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Line 2: Own Rate - Better contrast
     const line2 = document.createElement('div');
     line2.className = 'text-xs text-zinc-400 font-light leading-tight';
-    line2.textContent = data['Own Rate'] || data['Level'] || '-';
+    line2.textContent = data['Own Rate'] || data['Obj'] || '-';
 
     textWrap.appendChild(line1);
     textWrap.appendChild(line2);
